@@ -23,7 +23,7 @@
     <artifactId>multivimdriver-vio</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>multivimdriver/vio/mitaka</name>
+    <name>multivimdriver/vio</name>
     <description>multivimdriver for vio mitaka</description>
     <build>
       <plugins>
