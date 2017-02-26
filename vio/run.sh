@@ -11,4 +11,4 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-nohup python manage.py runserver 127.0.0.1:9004 > /dev/null &
+nohup python manage.py runserver 172.17.0.8:9004  &

@@ -20,8 +20,40 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from vio.pub.exceptions import VimDriverVioException
+from vio.pub.msapi import extsys
+from vio.pub.vim.vimapi.keystone import OperateTenant
 
 logger = logging.getLogger(__name__)
+
+
+class ListTenantsView(APIView):
+    def get(self, request, vimid):
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        data = {}
+        data['vimid'] = vim_info['vimId']
+        data['vimName'] = vim_info['name']
+        data['username'] = vim_info['userName']
+        data['password'] = vim_info['password']
+        data['url'] = vim_info['url']
+        data['project_name'] = vim_info['tenant']
+
+        tenant_instance = OperateTenant.OperateTenant()
+        projects = tenant_instance.get_projects(data)
+
+        rsp = {}
+        rsp['vimid'] = vim_info['vimId']
+        rsp['vimName'] = vim_info['name']
+        rsp['tenants'] = []
+
+        projects = list(projects)
+        logger.debug('project len: ', len(projects))
+        for project in projects:
+            tenant = {}
+            tenant['id'] = project.id
+            tenant['name'] = project.name
+            rsp['tenants'].append(tenant)
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
 
 class SwaggerJsonView(APIView):

@@ -1,0 +1,234 @@
+[25/Feb/2017 04:20:23] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166337
+[25/Feb/2017 04:24:35] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166337
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:19:59
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[25/Feb/2017 04:38:21] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 89548
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:37:54
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[25/Feb/2017 04:41:08] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166337
+[25/Feb/2017 04:43:01] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166333
+[25/Feb/2017 04:44:11] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:42:56
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+{'username': u'admin', 'project_name': u'admin', 'user_domain_name': 'default', 'auth_url': u'http://10.154.2.216:5000/v3', 'password': u'vmware', 'project_domain_name': 'default'}
+{'username': u'admin', 'project_name': u'demo', 'user_domain_name': 'default', 'auth_url': u'http://10.154.2.216:5000/v3', 'password': u'vmware', 'project_domain_name': 'default'}
+[25/Feb/2017 04:49:15] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:47:53
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:52:57
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[25/Feb/2017 04:55:02] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+[25/Feb/2017 04:55:38] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:55:04
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[25/Feb/2017 04:57:19] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+[25/Feb/2017 04:59:08] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 166331
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 25, 2017 - 04:57:11
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[25/Feb/2017 05:01:57] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 90098
+[26/Feb/2017 02:01:51] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 90098
+[26/Feb/2017 02:07:24] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:07:00
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:11:02] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:10:53
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:20:23] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+[26/Feb/2017 02:20:25] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:20:19
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:24:30] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 78190
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:24:03
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:25:43] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+[26/Feb/2017 02:26:11] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:25:50
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:28:02] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+[26/Feb/2017 02:29:51] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+[26/Feb/2017 02:29:52] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:29:54
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+[26/Feb/2017 02:32:33] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 78183
+[26/Feb/2017 02:32:38] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 78183
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:32:36
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 76, in emit
+    if self.shouldRollover(record):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 154, in shouldRollover
+    msg = "%s\n" % self.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 724, in format
+    return fmt.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 464, in format
+    record.message = record.getMessage()
+  File "/usr/lib64/python2.7/logging/__init__.py", line 328, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Logged from file views.py, line 50
+[26/Feb/2017 02:33:38] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 76, in emit
+    if self.shouldRollover(record):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 154, in shouldRollover
+    msg = "%s\n" % self.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 724, in format
+    return fmt.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 464, in format
+    record.message = record.getMessage()
+  File "/usr/lib64/python2.7/logging/__init__.py", line 328, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Logged from file views.py, line 50
+[26/Feb/2017 02:33:40] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 76, in emit
+    if self.shouldRollover(record):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 154, in shouldRollover
+    msg = "%s\n" % self.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 724, in format
+    return fmt.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 464, in format
+    record.message = record.getMessage()
+  File "/usr/lib64/python2.7/logging/__init__.py", line 328, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Logged from file views.py, line 50
+[26/Feb/2017 02:38:49] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+February 26, 2017 - 02:33:43
+Django version 1.9.6, using settings 'vio.settings'
+Starting development server at http://172.17.0.8:9004/
+Quit the server with CONTROL-C.
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 76, in emit
+    if self.shouldRollover(record):
+  File "/usr/lib64/python2.7/logging/handlers.py", line 154, in shouldRollover
+    msg = "%s\n" % self.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 724, in format
+    return fmt.format(record)
+  File "/usr/lib64/python2.7/logging/__init__.py", line 464, in format
+    record.message = record.getMessage()
+  File "/usr/lib64/python2.7/logging/__init__.py", line 328, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Logged from file views.py, line 50
+[26/Feb/2017 02:46:42] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 200 82
+[26/Feb/2017 02:49:54] "GET /openoapi/multivim-vio/v1/64552c59-68e1-4073-8b12-4ff346c1c880/tenants HTTP/1.0" 500 90106

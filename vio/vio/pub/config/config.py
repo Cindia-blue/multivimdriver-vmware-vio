@@ -13,8 +13,8 @@
 import os
 
 # [MSB]
-MSB_SERVICE_IP = '127.0.0.1'
-MSB_SERVICE_PORT = '10080'
+MSB_SERVICE_IP = '172.17.0.2'
+MSB_SERVICE_PORT = '80'
 
 # [IMAGE LOCAL PATH]
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -25,11 +25,11 @@ REDIS_PORT = '6379'
 REDIS_PASSWD = ''
 
 # [mysql]
-DB_IP = "127.0.0.1"
+DB_IP = '172.17.0.8'
 DB_PORT = 3306
-DB_NAME = "multivimvio"
-DB_USER = "root"
-DB_PASSWD = "password"
+DB_NAME = 'inventory'
+DB_USER = 'inventory'
+DB_PASSWD = 'inventory'
 
 # [register]
 REG_TO_MSB_WHEN_START = True
@@ -41,7 +41,7 @@ REG_TO_MSB_REG_PARAM = {
     "protocol": "REST",
     "visualRange": "1",
     "nodes": [{
-        "ip": "127.0.0.1",
+        "ip": "172.17.0.8",
         "port": "9004",
         "ttl": 0
     }]
