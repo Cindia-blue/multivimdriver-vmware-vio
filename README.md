@@ -42,7 +42,7 @@ docker run -t --name multivim-driver-vio -e MSB_ADDR=172.17.0.2:80 openoint/mult
 
 5 Check result
 
-Check http://192.168.130.132/openoapi/multivim-vio/v1/swagger.json
+Check http://localhost/openoapi/multivim-vio/v1/swagger.json
 
 6 Tune the code of VIO driver API
 
