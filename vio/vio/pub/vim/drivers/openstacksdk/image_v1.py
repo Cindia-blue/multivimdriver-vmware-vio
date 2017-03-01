@@ -17,18 +17,24 @@ from vio.pub.vim.drivers.openstacksdk import sdk
 
 LOG = logging.getLogger(__name__)
 
-class KeystoneClient(base.DriverBase):
-    '''Keystone V3 driver.'''
+class GlanceClient(base.DriverBase):
+    '''Image V1 driver.'''
 
     def __init__(self, params):
-        super(KeystoneClient, self).__init__(params)
+        super(GlanceClient, self).__init__(params)
         LOG.info("%s", str(params))
         self.conn = sdk.create_connection(params)
         self.session = self.conn.session
 
     @sdk.translate_exception
-    def project_list(self):
-        projects = self.conn.identity.projects()
-        return projects
+    def list_images(self):
+        images = self.conn.image.images()
+        return images
+
+
+    @sdk.translate_exception
+    def create_image(self):
+        image = self.conn.image.upload_image()
+        return image
 
 

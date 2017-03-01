@@ -15,10 +15,13 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from vio.swagger.views import SwaggerJsonView
 from vio.swagger.views import ListTenantsView
+from vio.swagger.views import CreateListImagesView
 
 urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/swagger.json$', SwaggerJsonView.as_view()),
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/tenants$', ListTenantsView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/images$',
+         CreateListImagesView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
