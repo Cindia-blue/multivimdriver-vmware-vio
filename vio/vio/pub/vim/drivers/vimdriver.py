@@ -10,15 +10,16 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-
 from vio.pub.vim.drivers.openstacksdk import image_v1
 from vio.pub.vim.drivers.openstacksdk import keystone_v3
+
+from vio.pub.vim.drivers import openstacksdk
+
 
 class VimDriver(object):
     '''Generic driver class'''
 
     def __init__(self):
-
         self.identity = keystone_v3.KeystoneClient
         self.glance = image_v1.GlanceClient
-
+        self.compute = openstacksdk.compute

@@ -15,6 +15,7 @@ SDK Client
 '''
 import functools
 import logging
+import six
 
 from openstack import connection
 from openstack import exceptions as sdk_exc
@@ -75,7 +76,8 @@ def parse_exception(ex):
         # This could be a generic exception or something we don't understand
         message = six.text_type(ex)
 
-    raise senlin_exc.InternalError(code=code, message=message)
+    raise ex
+#    raise senlin_exc.InternalError(code=code, message=message)
 
 
 def translate_exception(func):
