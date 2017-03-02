@@ -17,3 +17,24 @@ def server_formatter(server):
         "id": server.id,
         "name": server.name
     }
+
+
+def flavor_formatter(flavor, extra_specs):
+    # TODO: finish all attributes
+    return {
+        "id": flavor.id,
+        "name": flavor.name,
+        "vcpu": flavor.vcpus,
+        "memory": flavor.ram,
+        "disk": flavor.disk,
+        "ephemeral": flavor['OS-FLV-EXT-DATA:ephemeral'],
+        "swap": flavor.swap,
+        "isPublic": flavor['os-flavor-access:is_public'],
+        "extraSpecs": extra_specs_formatter(extra_specs)
+    }
+
+
+def extra_specs_formatter(extra_specs):
+    return {
+
+    }
