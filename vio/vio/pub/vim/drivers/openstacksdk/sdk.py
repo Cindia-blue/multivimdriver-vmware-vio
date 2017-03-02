@@ -100,7 +100,7 @@ def create_connection(params=None):
 
     prof = profile.Profile()
     prof.set_version('identity', 'v3')
-    prof.set_version('image', 'v1')
+    prof.set_version('image', 'v2')
 
     try:
         conn = connection.Connection(profile=prof, verify=False, user_agent=USER_AGENT,

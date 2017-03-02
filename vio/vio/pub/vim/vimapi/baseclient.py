@@ -26,6 +26,7 @@ class baseclient(object):
 
         # initialize clients
         self._identityclient = None
+        self._glanceclient = None
 
 
     def identity(self, data):
@@ -40,3 +41,12 @@ class baseclient(object):
             return self._identityclient
         self._identityclient = driver_base.VimDriver().identity(data)
         return self._identityclient
+
+
+    def glance(self, data):
+        if self._glanceclient is not None:
+            return self._glanceclient
+        self._glanceclient = driver_base.VimDriver().glance(data)
+        return self._glanceclient
+
+

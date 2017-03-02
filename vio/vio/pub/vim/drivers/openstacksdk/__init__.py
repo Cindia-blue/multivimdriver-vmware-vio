@@ -10,8 +10,4 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from vio.pub.vim.drivers.openstacksdk import keystone_v3
-
-
-identity = keystone_v3.KeystoneClient
 
