@@ -18,15 +18,24 @@ from vio.pub.vim.drivers.openstacksdk import sdk
 LOG = logging.getLogger(__name__)
 
 
-class KeystoneClient(base.DriverBase):
-    '''Keystone V3 driver.'''
+class ComputeClient(base.DriverBase):
+    """Compute driver."""
 
     def __init__(self, params):
-        super(KeystoneClient, self).__init__(params)
+        super(ComputeClient, self).__init__(params)
         self.conn = sdk.create_connection(params)
         self.session = self.conn.session
 
     @sdk.translate_exception
-    def project_list(self):
-        projects = self.conn.identity.projects()
-        return projects
+    def list_servers(self):
+        servers = self.conn.compute.servers()
+        return servers
+
+    @sdk.translate_exception
+    def get_server(self, server_id, **query):
+        server = self.conn.compute.get_server(server=server_id)
+        return server
+
+    @sdk.translate_exception
+    def delete_server(self, server_id, **query):
+        self.conn.compute.delete_server(server=server_id)

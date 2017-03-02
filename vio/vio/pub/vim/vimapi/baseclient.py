@@ -10,8 +10,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import copy
-
 import logging
 
 from vio.pub.vim.drivers import vimdriver as driver_base
@@ -21,13 +19,11 @@ LOG = logging.getLogger(__name__)
 
 class baseclient(object):
 
-
     def __init__(self,  **kwargs):
-
         # initialize clients
         self._identityclient = None
         self._glanceclient = None
-
+        self._computeClient = None
 
     def identity(self, data):
         '''Construct compute client based on object.
@@ -42,11 +38,15 @@ class baseclient(object):
         self._identityclient = driver_base.VimDriver().identity(data)
         return self._identityclient
 
-
     def glance(self, data):
         if self._glanceclient is not None:
             return self._glanceclient
         self._glanceclient = driver_base.VimDriver().glance(data)
         return self._glanceclient
 
+    def compute(self, data):
+        if self._computeClient is not None:
+            return self._computeClient
 
+        self._computeClient = driver_base.VimDriver().compute(data)
+        return self._computeClient
