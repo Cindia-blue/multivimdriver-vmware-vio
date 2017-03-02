@@ -54,7 +54,7 @@ Please commit into your change to GitHub firstly before push to the OPENO gerrit
 
 https://github.com/Cindia-blue/multivimdriver-vmware-vio/
 
-6 More check
+7 More check
 
 Registry VIO on http://localhost/openoui/microservices/index.html
 
