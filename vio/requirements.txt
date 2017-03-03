@@ -13,7 +13,7 @@ django-redis-cache==0.13.1
 httplib2==0.9.2
 
 # for call openstack api
-openstacksdk==0.8.1
+openstacksdk==0.9.14
 
 # for unit test
 coverage==4.2
