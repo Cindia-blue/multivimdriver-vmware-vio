@@ -24,6 +24,7 @@ class baseclient(object):
         self._identityclient = None
         self._glanceclient = None
         self._computeClient = None
+		self._cinderclient = None
 
     def identity(self, data):
         '''Construct compute client based on object.
@@ -50,3 +51,10 @@ class baseclient(object):
 
         self._computeClient = driver_base.VimDriver().compute(data)
         return self._computeClient
+		
+	def cinder(self, data):
+        if self._cinderclient is not None:
+            return self._cinderclient
+
+        self._cinderclient = driver_base.VimDriver().cinder(data)
+        return self._cinderclient
