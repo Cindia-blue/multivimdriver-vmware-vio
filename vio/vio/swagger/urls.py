@@ -16,18 +16,16 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from vio.swagger.views import SwaggerJsonView
 from vio.swagger.views import ListTenantsView
 from vio.swagger.views import CreateListImagesView
-from vio.swagger.views import ListServersView, GetServerView
+from vio.swagger.views import CreateListVolumeView
+from vio.swagger.views import GetDeleteVolumeView
 
 urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/swagger.json$', SwaggerJsonView.as_view()),
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/tenants$', ListTenantsView.as_view()),
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/images$',
-        CreateListImagesView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
-        r'(?P<tenantid>[0-9a-zA-Z]+)/servers$', ListServersView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
-        r'(?P<tenantid>[0-9a-zA-Z]+)/servers/(?P<serverid>[0-9a-zA-Z_-]+)$',
-        GetServerView.as_view()),
+         CreateListImagesView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/volumes$', CreateListVolumeView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/volumes/(?P<volumeid>[0-9a-zA-Z_-]+)$', GetDeleteVolumeView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
