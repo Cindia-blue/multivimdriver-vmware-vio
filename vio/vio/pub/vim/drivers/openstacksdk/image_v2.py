@@ -17,6 +17,7 @@ from vio.pub.vim.drivers.openstacksdk import sdk
 
 LOG = logging.getLogger(__name__)
 
+
 class GlanceClient(base.DriverBase):
     '''Image V1 driver.'''
 
@@ -31,10 +32,7 @@ class GlanceClient(base.DriverBase):
         images = self.conn.image.images()
         return images
 
-
     @sdk.translate_exception
     def create_image(self):
         image = self.conn.image.upload_image()
         return image
-
-

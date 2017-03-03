@@ -13,13 +13,13 @@
 from django.conf.urls import patterns, url
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from vio.swagger.views import SwaggerJsonView
-from vio.swagger.views import ListTenantsView
-from vio.swagger.views import CreateListImagesView
-from vio.swagger.views import CreateListVolumeView
-from vio.swagger.views import GetDeleteVolumeView
-from vio.swagger.views import ListServersView, GetServerView
-from vio.swagger.views import FlavorsView, FlavorView
+from vio.swagger.views.swagger_json import SwaggerJsonView
+from vio.swagger.views.tenant.views import ListTenantsView
+from vio.swagger.views.image.views import CreateListImagesView
+from vio.swagger.views.volume.views import CreateListVolumeView
+from vio.swagger.views.volume.views import GetDeleteVolumeView
+from vio.swagger.views.server.views import ListServersView, GetServerView
+from vio.swagger.views.flavor.views import FlavorsView, FlavorView
 
 urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/swagger.json$', SwaggerJsonView.as_view()),

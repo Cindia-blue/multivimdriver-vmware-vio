@@ -14,6 +14,7 @@
 from vio.pub.vim.drivers.openstacksdk import image_v2
 from vio.pub.vim.drivers.openstacksdk import keystone_v3
 from vio.pub.vim.drivers.openstacksdk import cinder_v2
+from vio.pub.vim.drivers.openstacksdk import compute
 
 
 class VimDriver(object):
@@ -23,4 +24,4 @@ class VimDriver(object):
         self.identity = keystone_v3.KeystoneClient
         self.glance = image_v2.GlanceClient
         self.cinder = cinder_v2.CinderClient
-
+        self.compute = compute
