@@ -48,3 +48,40 @@ def flavor_formatter(flavor, extra_specs):
 def extra_specs_formatter(extra_specs):
     return {
     }
+
+
+def server_limits_formatter(limits):
+    return {
+        # nova
+        'maxPersonality': limits.absolute.personality,
+        'maxPersonalitySize': limits.absolute.personality_size,
+        'maxServerGroupMembers': limits.absolute.server_group_members,
+        'maxServerGroups': limits.absolute.server_groups,
+        'maxImageMeta': limits.absolute.image_meta,
+        'maxTotalCores': limits.absolute.total_cores,
+        'maxTotalInstances': limits.absolute.instances,
+        'maxTotalKeypairs': limits.absolute.keypairs,
+        'maxTotalRAMSize': limits.absolute.total_ram,
+        'security_group_rules': limits.absolute.security_group_rules,
+        'security_group': limits.absolute.security_groups,
+
+        # cinder
+        # neutron
+    }
+
+
+def service_formatter(service):
+    return {
+        'service': service.binary,
+        'name': service.host,
+        'zone': service.zone,
+    }
+
+
+def hypervisor_formatter(hypervisor):
+    return {
+        'name': hypervisor.name,
+        'cpu': hypervisor.vcpus,
+        'disk_gb': hypervisor.local_disk_size,
+        'memory_mb': hypervisor.memory_size,
+    }
