@@ -15,11 +15,38 @@ import logging
 from openstack import exceptions
 
 from vio.pub.vim.vimapi.baseclient import baseclient
+from vio.pub.vim.vimapi.nova.OperateNova import OperateNova
 
 logger = logging.getLogger(__name__)
 
 
-class OperateServers(baseclient):
+class OperateServers(OperateNova):
+
+    def create_server(self, data, project_id, **kwargs):
+        import pdb;pdb.set_trace()
+        req = {
+            "name": kwargs.get('name'),
+            "networks": [
+                {'id': nic['portName']} for nic in kwargs.get('nicArray')
+            ],
+            "attached_volumes": [v['volumeName']
+                                 for v in kwargs.get('volumeArray')],
+            "flavor_id": kwargs.get('flavorId'),
+            "availability_zone": kwargs.get('availabilityZone'),
+            "metadata": {md['keyName']: md['value']
+                         for md in kwargs.get('metadata')},
+            "user_data": kwargs.get('userdata'),
+        }
+        boot = kwargs.get('boot')
+        boot_type = boot.get('type')
+        if boot_type == 1:
+            # boot from vol
+            boot.get('volumeId')
+            pass
+        elif boot_type == 2:
+            req['image_id'] = boot.get('imageId')
+        return self.request('create_server', data,
+                            project_id=project_id, **req)
 
     def list_servers(self, data, project_id):
         param = {'username': data['username'],

@@ -9,8 +9,7 @@
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-
+import json
 import logging
 
 from rest_framework import status
@@ -50,6 +49,26 @@ class ListServersView(APIView):
 
 
 class GetServerView(APIView):
+
+    def post(self, request, vimid, tenantid):
+        create_req = json.loads(request.body)
+
+        vim_info = extsys.get_vim_by_id(vimid)
+        data = {'vimid': vim_info['vimId'],
+                'vimName': vim_info['name'],
+                'username': vim_info['userName'],
+                'password': vim_info['password'],
+                'url': vim_info['url'],
+                'project_name': vim_info['tenant']}
+
+        servers_op = OperateServers.OperateServers()
+        server = servers_op.create_server(data, tenantid, create_req)
+        server_dict = nova_utils.server_formatter(server)
+
+        rsp = {'vimid': vim_info['vimId'],
+               'vimName': vim_info['name'],
+               'server': server_dict}
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
     def get(self, request, vimid, tenantid, serverid):
         vim_info = extsys.get_vim_by_id(vimid)

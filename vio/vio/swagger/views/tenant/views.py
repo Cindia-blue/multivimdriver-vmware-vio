@@ -45,8 +45,7 @@ class ListTenantsView(APIView):
 
         for project in projects:
             tenant = {}
-            logger.debug("testproject is : ", project)
-            tenant['id'] = project['id']
-            tenant['name'] = project['name']
+            tenant['id'] = project.id
+            tenant['name'] = project.name
             rsp['tenants'].append(tenant)
         return Response(data=rsp, status=status.HTTP_200_OK)
