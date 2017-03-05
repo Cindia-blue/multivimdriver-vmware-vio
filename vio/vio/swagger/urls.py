@@ -13,6 +13,9 @@
 from django.conf.urls import patterns, url
 from rest_framework.urlpatterns import format_suffix_patterns
 
+from vio.swagger.views.hypervisor.views import HostView
+from vio.swagger.views.limits.views import LimitsView
+from vio.swagger.views.service.views import HostsView
 from vio.swagger.views.swagger_json import SwaggerJsonView
 from vio.swagger.views.tenant.views import ListTenantsView
 from vio.swagger.views.image.views import CreateListImagesView
@@ -39,6 +42,15 @@ urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
         r'(?P<tenantid>[0-9a-zA-Z]+)/flavors/(?P<flavorid>[0-9a-zA-Z_-]+)$',
         FlavorView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z]+)/limits$',
+        LimitsView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z]+)/hosts$',
+        HostsView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z]+)/hosts/(?P<hostname>[0-9a-zA-Z_-]+)$',
+        HostView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

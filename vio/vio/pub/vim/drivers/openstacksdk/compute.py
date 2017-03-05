@@ -60,3 +60,15 @@ class ComputeClient(base.DriverBase):
     @sdk.translate_exception
     def get_flavor_extra_specs(self, flavor_id, **query):
         return None
+
+    @sdk.translate_exception
+    def get_limits(self, **kwargs):
+        return self.conn.compute.get_limits()
+
+    @sdk.translate_exception
+    def list_services(self, **kwargs):
+        return self.conn.compute.services()
+
+    @sdk.translate_exception
+    def get_hypervisor(self, hypervisor, **kwargs):
+        return self.conn.compute.get_hypervisor(hypervisor=hypervisor)

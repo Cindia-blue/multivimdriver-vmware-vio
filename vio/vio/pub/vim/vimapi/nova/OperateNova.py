@@ -28,8 +28,12 @@ class OperateNova(baseclient):
                  'user_domain_name': 'default',
                  'project_domain_name': 'default',
                  'password': data['password'],
-                 'auth_url': data['url'],
-                 'project_id': kwargs.get('project_id')}
+                 'auth_url': data['url']}
+        project_id = kwargs.get('project_id')
+        if project_id:
+            param['project_id'] = project_id
+        else:
+            param['project_name'] = kwargs.get('project_name')
         compute = self.compute(param)
         func = getattr(compute, op)
         return func(**kwargs)
