@@ -14,6 +14,7 @@
 SDK Client
 '''
 import functools
+import json
 import logging
 import six
 
@@ -42,7 +43,7 @@ def parse_exception(ex):
             data = ex.response.json()
         else:
             try:
-                data = jsonutils.loads(ex.details)
+                data = json.loads(ex.details)
             except Exception:
                 # Some exceptions don't have details record or
                 # are not in JSON format
@@ -76,6 +77,8 @@ def parse_exception(ex):
         # This could be a generic exception or something we don't understand
         message = six.text_type(ex)
 
+    import traceback
+    traceback.print_exc()
     raise ex
 #    raise senlin_exc.InternalError(code=code, message=message)
 
