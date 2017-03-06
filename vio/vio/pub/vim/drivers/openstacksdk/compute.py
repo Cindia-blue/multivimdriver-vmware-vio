@@ -46,8 +46,8 @@ class ComputeClient(base.DriverBase):
         return flavors
 
     @sdk.translate_exception
-    def create_flavor(self, **query):
-        self.conn.compute.create_flavor()
+    def create_flavor(self, **kwargs):
+        return self.conn.compute.create_flavor(**kwargs)
 
     @sdk.translate_exception
     def get_flavor(self, flavor_id, **query):

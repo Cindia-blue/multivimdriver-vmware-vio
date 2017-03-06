@@ -22,22 +22,22 @@ logger = logging.getLogger(__name__)
 
 class OperateServers(OperateNova):
 
-    def create_server(self, data, project_id, **kwargs):
+    def create_server(self, data, project_id, create_req):
         import pdb;pdb.set_trace()
         req = {
-            "name": kwargs.get('name'),
+            "name": create_req.get('name'),
             "networks": [
-                {'id': nic['portName']} for nic in kwargs.get('nicArray')
+                {'id': nic['portName']} for nic in create_req.get('nicArray')
             ],
             "attached_volumes": [v['volumeName']
-                                 for v in kwargs.get('volumeArray')],
-            "flavor_id": kwargs.get('flavorId'),
-            "availability_zone": kwargs.get('availabilityZone'),
+                                 for v in create_req.get('volumeArray')],
+            "flavor_id": create_req.get('flavorId'),
+            "availability_zone": create_req.get('availabilityZone'),
             "metadata": {md['keyName']: md['value']
-                         for md in kwargs.get('metadata')},
-            "user_data": kwargs.get('userdata'),
+                         for md in create_req.get('metadata')},
+            "user_data": create_req.get('userdata'),
         }
-        boot = kwargs.get('boot')
+        boot = create_req.get('boot')
         boot_type = boot.get('type')
         if boot_type == 1:
             # boot from vol
