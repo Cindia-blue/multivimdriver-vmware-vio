@@ -16,7 +16,6 @@ from vio.pub.config.config import REG_TO_MSB_WHEN_START, REG_TO_MSB_REG_URL, REG
 urlpatterns = [
     url(r'^', include('vio.swagger.urls')),
     url(r'^', include('vio.samples.urls')),
-    url(r'^', include('vio.pub.vim.vimapi.network.urls')),
 ]
 
 # regist to MSB when startup

@@ -17,6 +17,7 @@ from vio.pub.vim.drivers.openstacksdk import neutron_v2_0
 
 logger = logging.getLogger(__name__)
 
+
 def translate(mapping, data, revert=True):
     if revert:
         for key in mapping:
@@ -42,8 +43,9 @@ class BaseNet(object):
         param['auth_url'] = vim_info['url']
         param['project_name'] = vim_info['tenant']
         return neutron_v2_0.NeutronClient(param)
-        
-class Network(BaseNet):
+
+
+class OperateNetwork(BaseNet):
     service = {'service_type': 'network',
                'interface': 'public',
                'region_name': 'RegionOne'}
@@ -54,6 +56,7 @@ class Network(BaseNet):
                     "vlanTransparent": "vlan_transparent",
                     "tenantId": "project_id"
                     }
+
     def ___init__(self, params):
         super(Network, self).__init__(params)
 
@@ -77,8 +80,6 @@ class Network(BaseNet):
         body['project_id'] = tenantid
         body = translate(self.keys_mapping, body)
         net = network.network_create(**body)
-        logger.info("net is %s, net attr is %s",
-                net, dir(net))
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         resp = self._convert(net)
         resp.update(vim_dict)
