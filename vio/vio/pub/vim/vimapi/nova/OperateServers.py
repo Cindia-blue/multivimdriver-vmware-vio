@@ -14,7 +14,6 @@ import logging
 
 from openstack import exceptions
 
-from vio.pub.vim.vimapi.baseclient import baseclient
 from vio.pub.vim.vimapi.nova.OperateNova import OperateNova
 
 logger = logging.getLogger(__name__)
@@ -23,27 +22,30 @@ logger = logging.getLogger(__name__)
 class OperateServers(OperateNova):
 
     def create_server(self, data, project_id, create_req):
-        import pdb;pdb.set_trace()
+        project_id = None
         req = {
             "name": create_req.get('name'),
             "networks": [
-                {'id': nic['portName']} for nic in create_req.get('nicArray')
+                {'name': nic['portName']} for nic in create_req.get('nicArray')
             ],
-            "attached_volumes": [v['volumeName']
-                                 for v in create_req.get('volumeArray')],
+#            "attached_volumes": [v['volumeName']
+#                                 for v in create_req.get('volumeArray', [])],
             "flavor_id": create_req.get('flavorId'),
-            "availability_zone": create_req.get('availabilityZone'),
+            "flavor_name": create_req.get('flavorName'),
+#            "availability_zone": create_req.get('availabilityZone'),
             "metadata": {md['keyName']: md['value']
-                         for md in create_req.get('metadata')},
+                         for md in create_req.get('metadata', [])},
             "user_data": create_req.get('userdata'),
+            'security_groups': create_req.get('securityGroups', [])
         }
         boot = create_req.get('boot')
         boot_type = boot.get('type')
         if boot_type == 1:
             # boot from vol
-            boot.get('volumeId')
-            pass
+            req['volume_name'] = boot.get('volumeName')
+            req['volume_id'] = boot.get('volumeId')
         elif boot_type == 2:
+            req['image_name'] = boot.get('imageName')
             req['image_id'] = boot.get('imageId')
         return self.request('create_server', data,
                             project_id=project_id, **req)
