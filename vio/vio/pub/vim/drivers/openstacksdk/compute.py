@@ -9,7 +9,7 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
+import base64
 import logging
 
 from vio.pub.vim.drivers import base
@@ -25,6 +25,38 @@ class ComputeClient(base.DriverBase):
         super(ComputeClient, self).__init__(params)
         self.conn = sdk.create_connection(params)
         self.session = self.conn.session
+
+    @sdk.translate_exception
+    def create_server(self, **kwargs):
+        flavor_name = kwargs.pop('flavor_name', None)
+        if flavor_name:
+            kwargs['flavor_id'] = self.conn.compute.find_flavor(flavor_name)
+
+        if kwargs.get('volume_id') or kwargs.get('volume_name'):
+            pass
+        else:
+            image_name = kwargs.pop('image_name', None)
+            if image_name:
+                kwargs['image_id'] = self.conn.compute.find_image(image_name)
+
+        networks = kwargs.get('networks')
+        network_ids = []
+        for network in networks:
+            net_name = network.get('name')
+            net_id = network.get('id')
+            if net_name:
+                net_id = self.conn.network.find_network(net_name).id
+            network_ids.append({"uuid": net_id})
+        kwargs['networks'] = network_ids
+        kwargs.pop('project_id', None)
+
+        userdata = kwargs.get('user_data')
+        if userdata:
+            kwargs['user_data'] = base64.encodestring(userdata)
+
+        import pdb;pdb.set_trace()
+        server = self.conn.compute.create_server(**kwargs)
+        return server
 
     @sdk.translate_exception
     def list_servers(self):

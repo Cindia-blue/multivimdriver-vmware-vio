@@ -15,20 +15,25 @@ import six
 
 def server_formatter(server):
     # TODO: finish all attributes
-    return {
+    import pdb;pdb.set_trace()
+    r = {
         "id": server.id,
         "name": server.name,
         "tenantId": server.project_id,
         "boot": "",
         "nicArray": {},
-        "volumeArray": [v['id'] for v in server.attached_volumes],
         "availabilityZone": server.availability_zone,
-        "flavorId": server.flavor['id'],
-        "metadata": [{'keyName': k, 'value': v}
-                     for k, v in six.iteritems(server.metadata)],
-        "securityGroups": [i['name'] for i in server.security_groups],
+        "flavorId": server.flavor_id,
         "serverGroup": "",
     }
+    if server.attached_volumes:
+        r["volumeArray"] = [v['id'] for v in server.attached_volumes]
+    if server.metadata:
+        r["metadata"] = [{'keyName': k, 'value': v}
+                         for k, v in six.iteritems(server.metadata)]
+    if server.security_groups:
+        r["securityGroups"] = [i['name'] for i in server.security_groups]
+    return r
 
 
 def flavor_formatter(flavor, extra_specs):
