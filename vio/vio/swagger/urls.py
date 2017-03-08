@@ -52,11 +52,9 @@ urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
         r'(?P<tenantid>[0-9a-zA-Z]+)/hosts/(?P<hostname>[0-9a-zA-Z_-]+)$',
         HostView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/'
-        r'(?P<tenantid>[0-9a-zA-Z\-\_]+)/networks$',
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/networks$',
         CreateNetworkView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/'
-        r'(?P<tenantid>[0-9a-zA-Z\-\_]+)/networks/'
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/networks/'
         r'(?P<networkid>[0-9a-zA-Z\-\_]+)$',
         DeleteNetworkView.as_view()),
 ]
