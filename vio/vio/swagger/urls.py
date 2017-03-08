@@ -19,6 +19,7 @@ from vio.swagger.views.service.views import HostsView
 from vio.swagger.views.swagger_json import SwaggerJsonView
 from vio.swagger.views.tenant.views import ListTenantsView
 from vio.swagger.views.image.views import CreateListImagesView
+from vio.swagger.views.image.views import GetDeleteImageView
 from vio.swagger.views.volume.views import CreateListVolumeView
 from vio.swagger.views.volume.views import GetDeleteVolumeView
 from vio.swagger.views.server.views import ListServersView, GetServerView
@@ -27,11 +28,20 @@ from vio.swagger.views.network.views import CreateNetworkView, DeleteNetworkView
 
 urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/swagger.json$', SwaggerJsonView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/tenants$', ListTenantsView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/images$',
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'tenants$', ListTenantsView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z_-]+)/images$',
          CreateListImagesView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/volumes$', CreateListVolumeView.as_view()),
-    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/(?P<tenantid>[0-9a-zA-Z_-]+)/volumes/(?P<volumeid>[0-9a-zA-Z_-]+)$', GetDeleteVolumeView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z_-]+)/images/(?P<imageid>[0-9a-zA-Z_-]+)$',
+        GetDeleteImageView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z_-]+)/volumes$',
+        CreateListVolumeView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
+        r'(?P<tenantid>[0-9a-zA-Z_-]+)/volumes/(?P<volumeid>[0-9a-zA-Z_-]+)$',
+        GetDeleteVolumeView.as_view()),
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
         r'(?P<tenantid>[0-9a-zA-Z]+)/servers$', ListServersView.as_view()),
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z_-]+)/'
