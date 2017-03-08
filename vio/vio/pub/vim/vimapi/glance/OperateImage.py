@@ -18,6 +18,7 @@ import logging
 
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.baseclient import baseclient
+from vio.swagger import image_utils
 
 logger = logging.getLogger(__name__)
 
@@ -26,24 +27,19 @@ logger = logging.getLogger(__name__)
 class OperateImage(baseclient):
 
     def get_vim_images(self, data):
-        param = {}
-        param['username'] = data['username']
-        param['user_domain_name'] = 'default'
-        param['project_domain_name'] = 'default'
-        param['password'] = data['password']
-        param['auth_url'] = data['url']
-        param['project_name'] = data['project_name']
+
+        param = image_utils.sdk_param_formatter(data)
         images = self.glance(param).list_images()
         return images
 
-    def create_vim_image(self, data):
-        param = {}
-        param['username'] = data['username']
-        param['user_domain_name'] = 'default'
-        param['project_domain_name'] = 'default'
-        param['password'] = data['password']
-        param['auth_url'] = data['url']
-        param['project_name'] = data['project_name']
-        image = self.glance(param).create_image()
+    def get_vim_image(self, data, imageid):
+
+        param = image_utils.sdk_param_formatter(data)
+        image = self.glance(param).get_image(imageid)
         return image
-       
+
+    def delete_vim_image(self, data, imageid):
+
+        param = image_utils.sdk_param_formatter(data)
+        image = self.glance(param).delete_image(imageid)
+        return image
