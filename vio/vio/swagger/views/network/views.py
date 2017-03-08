@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class CreateNetworkView(APIView):
-    def create_network(request, vimid, tenantid):
+    def post(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
         net = OperateNetwork.OperateNetwork()
@@ -36,7 +36,7 @@ class CreateNetworkView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def list_networks(request, vimid, tenantid):
+    def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
         net = OperateNetwork.OperateNetwork()
@@ -50,7 +50,7 @@ class CreateNetworkView(APIView):
 
 class DeleteNetworkView(APIView):
 
-    def list_network(self, request, vimid, tenantid, networkid):
+    def get(self, request, vimid, tenantid, networkid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
         net = OperateNetwork.OperateNetwork()
@@ -61,7 +61,7 @@ class DeleteNetworkView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def delete_network(self, request, vimid, tenantid, networkid):
+    def delete(self, request, vimid, tenantid, networkid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
         net = OperateNetwork.OperateNetwork()
