@@ -22,33 +22,47 @@ logger = logging.getLogger(__name__)
 class OperateServers(OperateNova):
 
     def create_server(self, data, project_id, create_req):
-        project_id = None
+        param = {'username': data['username'],
+                 'user_domain_name': 'default',
+                 'project_domain_name': 'default',
+                 'password': data['password'],
+                 'auth_url': data['url'],
+                 'project_id': project_id}
+        cc = self.compute(param)
         req = {
             "name": create_req.get('name'),
-            "networks": [
-                {'name': nic['portName']} for nic in create_req.get('nicArray')
-            ],
-#            "attached_volumes": [v['volumeName']
-#                                 for v in create_req.get('volumeArray', [])],
-            "flavor_id": create_req.get('flavorId'),
-            "flavor_name": create_req.get('flavorName'),
-#            "availability_zone": create_req.get('availabilityZone'),
-            "metadata": {md['keyName']: md['value']
-                         for md in create_req.get('metadata', [])},
-            "user_data": create_req.get('userdata'),
-            'security_groups': create_req.get('securityGroups', [])
+            "flavorRef": cc.find_flavor(create_req.get('flavorId')).id
         }
         boot = create_req.get('boot')
         boot_type = boot.get('type')
         if boot_type == 1:
             # boot from vol
-            req['volume_name'] = boot.get('volumeName')
-            req['volume_id'] = boot.get('volumeId')
+            req['block_device_mapping_v2'] = {
+                'uuid': boot["volumeId"],
+                'source_type': 'volume',
+                'destination_type': 'volume',
+                'delete_on_termination': False
+            }
         elif boot_type == 2:
-            req['image_name'] = boot.get('imageName')
-            req['image_id'] = boot.get('imageId')
-        return self.request('create_server', data,
-                            project_id=project_id, **req)
+            req['imageRef'] = cc.find_image(boot.get('imageId')).id
+        networks = create_req.get('nicArray', [])
+        if networks:
+            req['networks'] = [{'port': n['portId']} for n in networks]
+        az = create_req.get('availabilityZone', None)
+        if az:
+            req['availability_zone'] = az
+        md = create_req.get('metadata', [])
+        if md:
+            req['metadata'] = [{n['keyName']: n['Value']} for n in md]
+        userdata = create_req.get('userdata', None)
+        if userdata:
+            req['user_data'] = userdata
+        sg = create_req.get('securityGroups', [])
+        if sg:
+            req['security_groups'] = sg
+        # todo attach volumes after server created
+        volumes = create_req.get('volumeArray', [])
+        return cc.create_server(**req)
 
     def list_servers(self, data, project_id):
         param = {'username': data['username'],
