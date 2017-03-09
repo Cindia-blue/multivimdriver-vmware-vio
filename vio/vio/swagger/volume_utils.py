@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 
-def VolumeFormatter(volume):
+def volume_formatter(volume):
 
     attachments = []
     for attach in volume.attachments:
@@ -34,3 +34,35 @@ def VolumeFormatter(volume):
         'availabilityZone' : volume.availability_zone,
         'attachments' : attachments
     }
+
+
+def vim_formatter(vim_info, tenantid):
+
+    rsp = {}
+    rsp['vimId'] = vim_info.get('vimId')
+    rsp['vimName'] = vim_info.get('name')
+    rsp['tenantId'] = tenantid
+    return rsp
+
+
+def sdk_param_formatter(data):
+
+    param = {}
+    param['username'] = data.get('userName')
+    param['password'] = data.get('password')
+    param['auth_url'] = data.get('url')
+    param['project_name'] = data.get('tenant')
+    param['user_domain_name'] = 'default'
+    param['project_domain_name'] = 'default'
+    return param
+
+
+def req_body_formatter(body):
+
+    param = {}
+    param['size'] = body.get('volumeSize')
+    param['volume_type'] = body.get('volumeType')
+    param['name'] = body.get('name')
+    param['availability_zone'] = body.get('availabilityZone')
+    param['image_id'] = body.get('imageName')
+    return param

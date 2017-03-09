@@ -26,112 +26,70 @@ from vio.swagger import volume_utils
 logger = logging.getLogger(__name__)
 
 
-class CreateListVolumeView(APIView):
-
-    def get(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
-
-        data = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'username' : vim_info['userName'],
-            'password' : vim_info['password'],
-            'url' : vim_info['url'],
-            'project_name' : vim_info['tenant']
-        }
-
-        volume_op = OperateVolume.OperateVolume()
-        volumes = volume_op.get_vim_volumes(data, tenantid)
-
-        volume_resp = []
-
-        for volume in volumes:
-            volume_id = volume.id
-            volume_info = volume_op.get_vim_volume(data, tenantid, volume_id)
-            volume_resp.append(volume_utils.VolumeFormatter(volume_info))
-
-        rsp = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'volumes' : volume_resp
-        }
-        return Response(data=rsp, status=status.HTTP_200_OK)
-
-    def post(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
-
-        data = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'username' : vim_info['userName'],
-            'password' : vim_info['password'],
-            'url' : vim_info['url'],
-            'project_name' : vim_info['tenant']
-        }
-
-        logger.debug(request.body)
-        json_body = json.loads(request.body)
-        param = {
-            'name' : json_body['name'],
-            'size' : json_body['volumeSize'],
-            'availability_zone' : json_body['availabilityZone'],
-            'imageRef' : json_body['imageName'],
-            'volume_type' : json_body['volumeType']
-        }
-
-        logger.debug(param)
-        body = {}
-        body["volume"] = param
-        logger.debug(body)
-
-        volume_op = OperateVolume.OperateVolume()
-        volume = volume_op.create_vim_volume(data, tenantid, body)
-
-        rsp = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'volumes' : volume
-        }
-        return Response(data=rsp, status=status.HTTP_200_OK)
-
-
 class GetDeleteVolumeView(APIView):
 
     def get(self, request, vimid, tenantid, volumeid):
         vim_info = extsys.get_vim_by_id(vimid)
 
-        data = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'username' : vim_info['userName'],
-            'password' : vim_info['password'],
-            'url' : vim_info['url'],
-            'project_name' : vim_info['tenant']
-        }
+        volume_op = OperateVolume.OperateVolume(vim_info)
+        volume = volume_op.get_vim_volume(volumeid)
 
-        volume_op = OperateVolume.OperateVolume()
-        volume = volume_op.get_vim_volume(data, tenantid, volumeid)
+        vim_rsp = volume_utils.vim_formatter(vim_info, tenantid)
+        rsp  = volume_utils.volume_formatter(volume)
 
-        vim_volume  = volume_utils.VolumeFormatter(volume)
-
-        rsp = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'volumes' : vim_volume
-        }
+        rsp.update(vim_rsp)
         return Response(data=rsp, status=status.HTTP_200_OK)
 
-    def post(self, request, vimid, tenantid, volumeid):
+
+    def delete(self, request, vimid, tenantid, volumeid):
         vim_info = extsys.get_vim_by_id(vimid)
 
-        data = {
-            'vimid' : vim_info['vimId'],
-            'vimName' : vim_info['name'],
-            'username' : vim_info['userName'],
-            'password' : vim_info['password'],
-            'url' : vim_info['url'],
-            'project_name' : vim_info['tenant']
-        }
+        volume_op = OperateVolume.OperateVolume(vim_info)
+        volume_op.delete_vim_volume(volumeid)
+        rsp = {'204':'no content'}
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
-        volume_op = OperateVolume.OperateVolume()
-        volume = volume_op.delete_vim_volume(data, tenantid, volumeid)
+
+class CreateListVolumeView(APIView):
+
+    def get(self, request, vimid, tenantid):
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        volume_op = OperateVolume.OperateVolume(vim_info)
+        volumes = volume_op.get_vim_volumes()
+
+        rsp = {}
+        rsp['volumes'] = []
+
+        vim_rsp = volume_utils.vim_formatter(vim_info, tenantid)
+        for volume in volumes:
+            volume_info = volume_op.get_vim_volume(volume.id)
+            rsp['volumes'].append(volume_utils.volume_formatter(volume_info))
+
+        rsp.update(vim_rsp)
+        return Response(data=rsp, status=status.HTTP_200_OK)
+
+
+    def post(self, request, vimid, tenantid):
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        volume_op = OperateVolume.OperateVolume(vim_info)
+        volumes_detail = volume_op.get_vim_volumes()
+
+        json_body = json.loads(request.body)
+
+        vim_rsp = volume_utils.vim_formatter(vim_info, tenantid)
+        for volume in volumes_detail:
+            if volume.name == json_body.get('name'):
+                volume_info = volume_op.get_vim_volume(volume.id)
+                rsp  = volume_utils.volume_formatter(volume_info)
+                rsp['returnCode'] = 0
+                rsp.update(vim_rsp)
+                return Response(data=rsp, status=status.HTTP_200_OK)
+
+        param = volume_utils.req_body_formatter(json_body)
+        volume_info = volume_op.create_vim_volume(**param)
+        rsp  = volume_utils.volume_formatter(volume_info)
+        rsp['returnCode'] = 1
+        rsp.update(vim_rsp)
+        return Response(data=rsp, status=status.HTTP_200_OK)
