@@ -64,7 +64,9 @@ class ListServersView(APIView):
 
         servers_resp = []
         for server in servers:
-            servers_resp.append(nova_utils.server_formatter(server))
+            intfs = servers_op.list_server_interfaces(data, tenantid, server)
+            servers_resp.append(nova_utils.server_formatter(
+                server, interfaces=intfs))
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -86,11 +88,13 @@ class GetServerView(APIView):
 
         servers_op = OperateServers.OperateServers()
         server = servers_op.get_server(data, tenantid, serverid)
-        server_dict = nova_utils.server_formatter(server)
+        intfs = servers_op.list_server_interfaces(data, tenantid, server)
+        server_dict = nova_utils.server_formatter(server, interfaces=intfs)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
-               'server': server_dict}
+               'tenantId': tenantid}
+        rsp.update(server_dict)
 
         return Response(data=rsp, status=status.HTTP_200_OK)
 
