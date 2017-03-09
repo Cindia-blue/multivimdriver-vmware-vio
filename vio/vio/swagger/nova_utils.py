@@ -20,10 +20,14 @@ def server_formatter(server, interfaces=[]):
         "tenantId": server.project_id,
         "availabilityZone": server.availability_zone,
         "flavorId": server.flavor_id or server.flavor['id'],
+        "volumeArray": [],
+        "metadata": [],
+        "securityGroups": [],
         # TODO finish following attributes
         "serverGroup": "",
         "contextArray": [],
         "userdata": server.user_data,
+        "nicArray": [],
     }
     if server.networks:
         r['nicArray'] = [n['port'] for n in server.networks]
