@@ -10,6 +10,7 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+import base64
 import logging
 
 from openstack import exceptions
@@ -56,7 +57,7 @@ class OperateServers(OperateNova):
             req['metadata'] = [{n['keyName']: n['Value']} for n in md]
         userdata = create_req.get('userdata', None)
         if userdata:
-            req['user_data'] = userdata
+            req['user_data'] = base64.encodestring(userdata)
         sg = create_req.get('securityGroups', [])
         if sg:
             req['security_groups'] = sg
