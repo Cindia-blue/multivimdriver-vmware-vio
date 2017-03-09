@@ -55,8 +55,10 @@ class CreateListVolumeView(APIView):
     def get(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
 
+        query_data = dict(request.query_params)
+
         volume_op = OperateVolume.OperateVolume(vim_info)
-        volumes = volume_op.get_vim_volumes()
+        volumes = volume_op.get_vim_volumes(**query_data)
 
         rsp = {}
         rsp['volumes'] = []
