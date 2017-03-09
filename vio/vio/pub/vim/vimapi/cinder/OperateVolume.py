@@ -1,4 +1,4 @@
-# Copyright 2016 ZTE Corporation.
+# Copyright 2017 VMware, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,60 +18,33 @@ import logging
 
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.baseclient import baseclient
+from vio.swagger import volume_utils
 
 logger = logging.getLogger(__name__)
 
 
-
 class OperateVolume(baseclient):
 
-    def get_vim_volumes(self, data, project_id):
-        param = {
-            'username' : data['username'],
-            'user_domain_name' : 'default',
-            'project_domain_name' : 'default',
-            'password' : data['password'],
-            'auth_url' : data['url'],
-            'project_id' : project_id
-        }
+    def __init__(self, params):
+        super(OperateVolume, self).__init__()
+        self.param = volume_utils.sdk_param_formatter(params)
 
-        volumes = self.cinder(param).list_volumes()
+    def get_vim_volumes(self, **query):
+
+        volumes = self.cinder(self.param).list_volumes(**query)
         return volumes
 
+    def create_vim_volume(self, **body):
 
-    def create_vim_volume(self, data, project_id, body):
-        param = {
-            'username' : data['username'],
-            'user_domain_name' : 'default',
-            'project_domain_name' : 'default',
-            'password' : data['password'],
-            'auth_url' : data['url'],
-            'project_id' : project_id
-        }
-        logger.debug(body)
-        volume = self.cinder(param).create_volume(**body)
+        volume = self.cinder(self.param).create_volume(**body)
         return volume
 
-    def get_vim_volume(self, data, project_id, volume_id):
-        param = {
-            'username' : data['username'],
-            'user_domain_name' : 'default',
-            'project_domain_name' : 'default',
-            'password' : data['password'],
-            'auth_url' : data['url'],
-            'project_id' : project_id
-        }
-        volume = self.cinder(param).get_volume(volume_id)
+    def get_vim_volume(self, volume_id):
+
+        volume = self.cinder(self.param).get_volume(volume_id)
         return volume
 
-    def delete_vim_volume(self, data, project_id, volume_id):
-        param = {
-            'username' : data['username'],
-            'user_domain_name' : 'default',
-            'project_domain_name' : 'default',
-            'password' : data['password'],
-            'auth_url' : data['url'],
-            'project_id' : project_id
-        }
-        volume = self.cinder(param).delete_volume(volume_id)
+    def delete_vim_volume(self, volume_id):
+
+        volume = self.cinder(self.param).delete_volume(volume_id)
         return volume

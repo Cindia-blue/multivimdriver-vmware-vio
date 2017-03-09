@@ -17,42 +17,48 @@ from rest_framework.views import APIView
 
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.glance import OperateImage
+from vio.swagger import image_utils
+
+class GetDeleteImageView(APIView):
+
+    def get(self, request, vimid, tenantid, imageid):
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        image_op = OperateImage.OperateImage()
+        image = image_op.get_vim_image(vim_info, imageid)
+        vim_rsp = image_utils.vim_formatter(vim_info, tenantid)
+        rsp = image_utils.image_formatter(image)
+        rsp.update(vim_rsp)
+        return Response(data=rsp, status=status.HTTP_200_OK)
+
+
+    def delete(self, request, vimid, tenantid, imageid):
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        image_op = OperateImage.OperateImage()
+        image_op.delete_vim_image(vim_info, imageid)
+        rsp = {'204':'no content'}
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
 
 class CreateListImagesView(APIView):
+
+
     def get(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
 
-        data = {}
-        data['vimid'] = vim_info['vimId']
-        data['vimName'] = vim_info['name']
-        data['username'] = vim_info['userName']
-        data['password'] = vim_info['password']
-        data['url'] = vim_info['url']
-        data['project_name'] = vim_info['tenant']
-        data['tenantid'] = tenantid
-
         image_instance = OperateImage.OperateImage()
-        images = image_instance.get_vim_images(data)
+        images = image_instance.get_vim_images(vim_info)
 
         rsp = {}
-        rsp['vimid'] = vim_info['vimId']
-        rsp['vimName'] = vim_info['name']
-        rsp['teanantid'] = tenantid
         rsp['images'] = []
-
+        vim_rsp = image_utils.vim_formatter(vim_info, tenantid)
         for image in images:
-            vim_image = {}
-            vim_image['id'] = image['id']
-            vim_image['name'] = image['name']
-            vim_image['size'] = image['size']/1024
-            vim_image['status'] = image['status']
-            vim_image['imageType'] = image['disk_format']
-            vim_image['containerFormat'] = image['container_format']
-            vim_image['visibility'] = image['visibility']
-            rsp['images'].append(vim_image)
+            rsp['images'].append(image_utils.image_formatter(image))
+        rsp.update(vim_rsp)
 
         return Response(data=rsp, status=status.HTTP_200_OK)
+
 
     def post(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)

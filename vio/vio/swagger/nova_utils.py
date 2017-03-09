@@ -13,21 +13,36 @@
 import six
 
 
-def server_formatter(server):
-    # TODO: finish all attributes
-    import pdb;pdb.set_trace()
+def server_formatter(server, interfaces=[]):
     r = {
         "id": server.id,
         "name": server.name,
         "tenantId": server.project_id,
-        "boot": "",
-        "nicArray": {},
         "availabilityZone": server.availability_zone,
-        "flavorId": server.flavor_id,
+        "flavorId": server.flavor_id or server.flavor['id'],
+        "volumeArray": [],
+        "metadata": [],
+        "securityGroups": [],
+        # TODO finish following attributes
         "serverGroup": "",
+        "contextArray": [],
+        "userdata": server.user_data,
+        "nicArray": [],
     }
+    if server.networks:
+        r['nicArray'] = [n['port'] for n in server.networks]
     if server.attached_volumes:
         r["volumeArray"] = [v['id'] for v in server.attached_volumes]
+    if server.image_id or server.image:
+        r['boot'] = {
+            'type': 2,
+            'imageId': server.image_id or server.image['id']
+        }
+    else:
+        r['boot'] = {
+            'type': 1,
+            'volumeId': r['volumeArray'][0]
+        }
     if server.metadata:
         r["metadata"] = [{'keyName': k, 'value': v}
                          for k, v in six.iteritems(server.metadata)]
