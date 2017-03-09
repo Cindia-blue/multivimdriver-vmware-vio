@@ -46,6 +46,11 @@ class ComputeClient(base.DriverBase):
         self.conn.compute.delete_server(server=server_id)
 
     @sdk.translate_exception
+    def list_server_interfaces(self, server_id):
+        ifaces = self.conn.compute.server_interfaces(server_id)
+        return list(ifaces)
+
+    @sdk.translate_exception
     def list_flavors(self, **query):
         flavors = self.conn.compute.flavors()
         return flavors

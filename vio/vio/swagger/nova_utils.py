@@ -13,13 +13,13 @@
 import six
 
 
-def server_formatter(server):
+def server_formatter(server, interfaces=[]):
     r = {
         "id": server.id,
         "name": server.name,
         "tenantId": server.project_id,
         "availabilityZone": server.availability_zone,
-        "flavorId": server.flavor_id,
+        "flavorId": server.flavor_id or server.flavor['id'],
         # TODO finish following attributes
         "serverGroup": "",
         "contextArray": [],
@@ -29,10 +29,10 @@ def server_formatter(server):
         r['nicArray'] = [n['port'] for n in server.networks]
     if server.attached_volumes:
         r["volumeArray"] = [v['id'] for v in server.attached_volumes]
-    if server.image_id:
+    if server.image_id or server.image:
         r['boot'] = {
             'type': 2,
-            'imageId': server.image_id
+            'imageId': server.image_id or server.image['id']
         }
     else:
         r['boot'] = {
