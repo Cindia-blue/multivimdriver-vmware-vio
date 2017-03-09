@@ -77,7 +77,6 @@ class OperateNetwork(BaseNet):
     def create_network(self, vimid, tenantid, body):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info)
-        # body['project_id'] = tenantid
         body = translate(self.keys_mapping, body)
         net = network.network_create(**body)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
