@@ -28,33 +28,6 @@ class ComputeClient(base.DriverBase):
 
     @sdk.translate_exception
     def create_server(self, **kwargs):
-        flavor_name = kwargs.pop('flavor_name', None)
-        if flavor_name:
-            kwargs['flavor_id'] = self.conn.compute.find_flavor(flavor_name)
-
-        if kwargs.get('volume_id') or kwargs.get('volume_name'):
-            pass
-        else:
-            image_name = kwargs.pop('image_name', None)
-            if image_name:
-                kwargs['image_id'] = self.conn.compute.find_image(image_name)
-
-        networks = kwargs.get('networks')
-        network_ids = []
-        for network in networks:
-            net_name = network.get('name')
-            net_id = network.get('id')
-            if net_name:
-                net_id = self.conn.network.find_network(net_name).id
-            network_ids.append({"uuid": net_id})
-        kwargs['networks'] = network_ids
-        kwargs.pop('project_id', None)
-
-        userdata = kwargs.get('user_data')
-        if userdata:
-            kwargs['user_data'] = base64.encodestring(userdata)
-
-        import pdb;pdb.set_trace()
         server = self.conn.compute.create_server(**kwargs)
         return server
 
@@ -73,6 +46,11 @@ class ComputeClient(base.DriverBase):
         self.conn.compute.delete_server(server=server_id)
 
     @sdk.translate_exception
+    def list_server_interfaces(self, server_id):
+        ifaces = self.conn.compute.server_interfaces(server_id)
+        return list(ifaces)
+
+    @sdk.translate_exception
     def list_flavors(self, **query):
         flavors = self.conn.compute.flavors()
         return flavors
@@ -86,12 +64,21 @@ class ComputeClient(base.DriverBase):
         return self.conn.compute.get_flavor(flavor=flavor_id)
 
     @sdk.translate_exception
+    def find_flavor(self, flavor_id):
+        return self.conn.compute.find_flavor(flavor_id, ignore_missing=False)
+
+    @sdk.translate_exception
     def delete_flavor(self, flavor_id, **query):
         self.conn.compute.delete_flavor(flavor=flavor_id)
 
     @sdk.translate_exception
     def get_flavor_extra_specs(self, flavor_id, **query):
         return None
+
+    @sdk.translate_exception
+    def find_image(self, image_id, ignore_missing=False):
+        return self.conn.compute.find_image(
+            image_id, ignore_missing=ignore_missing)
 
     @sdk.translate_exception
     def get_limits(self, **kwargs):

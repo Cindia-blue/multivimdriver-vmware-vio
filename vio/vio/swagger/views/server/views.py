@@ -37,12 +37,17 @@ class ListServersView(APIView):
                 'project_name': vim_info['tenant']}
 
         servers_op = OperateServers.OperateServers()
-        server = servers_op.create_server(data, tenantid, create_req)
+        try:
+            server = servers_op.create_server(data, tenantid, create_req)
+        except Exception as ex:
+            return Response(data=str(ex),
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         server_dict = nova_utils.server_formatter(server)
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
-               'server': server_dict}
+               'tenantId': tenantid}
+        rsp.update(server_dict)
         return Response(data=rsp, status=status.HTTP_200_OK)
 
     def get(self, request, vimid, tenantid):
