@@ -22,6 +22,11 @@ class NeutronClient(base.DriverBase):
         self.conn = sdk.create_connection(params)
 
     @sdk.translate_exception
+    def subnet_create(self, **args):
+        network = self.conn.network.create_subnet(**args)
+        return network
+    
+    @sdk.translate_exception
     def network_create(self, **args):
         network = self.conn.network.create_network(**args)
         return network
@@ -42,14 +47,19 @@ class NeutronClient(base.DriverBase):
         return network
 
     @sdk.translate_exception
+    def subnets_get(self, **kwargs):
+        subnets = self.conn.network.subnets(**kwargs)
+        return subnets
+
+    @sdk.translate_exception
+    def subnet_delete(self, name_or_id):
+        res = self.conn.network.delete_subnet(name_or_id)
+        return res
+
+    @sdk.translate_exception
     def port_find(self, name_or_id, ignore_missing=False):
         port = self.conn.network.find_port(name_or_id, ignore_missing)
         return port
-
-    @sdk.translate_exception
-    def security_group_find(self, name_or_id, ignore_missing=False):
-        sg = self.conn.network.find_security_group(name_or_id, ignore_missing)
-        return sg
 
     @sdk.translate_exception
     def subnet_get(self, name_or_id, ignore_missing=False):
@@ -68,48 +78,8 @@ class NeutronClient(base.DriverBase):
         return res
 
     @sdk.translate_exception
-    def port_update(self, port, **attr):
-        res = self.conn.network.update_port(port, **attr)
-        return res
+    def ports_get(self, **kwargs):
+        ports = self.conn.network.ports(**kwargs)
+        return ports
 
-    @sdk.translate_exception
-    def floatingip_find(self, name_or_id, ignore_missing=False):
-        res = self.conn.network.find_ip(
-            name_or_id, ignore_missing=ignore_missing)
-        return res
-
-    @sdk.translate_exception
-    def floatingip_list(self, fixed_ip=None,
-                        floating_ip=None, floating_network=None,
-                        port=None, router=None, status=None):
-        filters = {}
-        if fixed_ip:
-            filters['fixed_ip_address'] = fixed_ip
-        if floating_ip:
-            filters['floating_ip_address'] = floating_ip
-        if floating_network:
-            filters['floating_network_id'] = floating_network
-        if port:
-            filters['port_id'] = port
-        if router:
-            filters['router_id'] = router
-        if status:
-            filters['status'] = status
-        res = self.conn.network.ips(**filters)
-        return list(res)
-
-    @sdk.translate_exception
-    def floatingip_create(self, **attr):
-        res = self.conn.network.create_ip(**attr)
-        return res
-
-    @sdk.translate_exception
-    def floatingip_delete(self, floating_ip, ignore_missing=True):
-        res = self.conn.network.delete_ip(
-            floating_ip, ignore_missing=ignore_missing)
-        return res
-
-    @sdk.translate_exception
-    def floatingip_update(self, floating_ip, **attr):
-        res = self.conn.network.update_ip(floating_ip, **attr)
-        return res
+    

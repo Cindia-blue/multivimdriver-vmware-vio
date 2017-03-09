@@ -24,6 +24,8 @@ from vio.swagger.views.volume.views import GetDeleteVolumeView
 from vio.swagger.views.server.views import ListServersView, GetServerView
 from vio.swagger.views.flavor.views import FlavorsView, FlavorView
 from vio.swagger.views.network.views import CreateNetworkView, DeleteNetworkView
+from vio.swagger.views.subnet.views import CreateSubnetView, DeleteSubnetView
+from vio.swagger.views.port.views import CreatePortView, DeletePortView
 
 urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/swagger.json$', SwaggerJsonView.as_view()),
@@ -57,6 +59,16 @@ urlpatterns = [
     url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/networks/'
         r'(?P<networkid>[0-9a-zA-Z\-\_]+)$',
         DeleteNetworkView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/subnets$',
+        CreateSubnetView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/subnets/'
+        r'(?P<subnetid>[0-9a-zA-Z\-\_]+)$',
+        DeleteSubnetView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/ports$',
+        CreatePortView.as_view()),
+    url(r'^openoapi/multivim-vio/v1/(?P<vimid>[0-9a-zA-Z\-\_]+)/(?P<tenantid>[0-9a-zA-Z\-\_]+)/ports/'
+        r'(?P<portid>[0-9a-zA-Z\-\_]+)$',
+        DeletePortView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
