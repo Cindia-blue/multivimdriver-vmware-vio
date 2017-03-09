@@ -29,10 +29,12 @@ def server_formatter(server, interfaces=[]):
         "userdata": server.user_data,
         "nicArray": [],
     }
-    if server.networks:
-        r['nicArray'] = [n['port'] for n in server.networks]
+    if interfaces:
+        r['nicArray'] = [{'portId': i.port_id} for i in interfaces]
+    elif server.networks:
+        r['nicArray'] = [{'portId': n['port']} for n in server.networks]
     if server.attached_volumes:
-        r["volumeArray"] = [v['id'] for v in server.attached_volumes]
+        r["volumeArray"] = [{'volumeId': v['id']} for v in server.attached_volumes]
     if server.image_id or server.image:
         r['boot'] = {
             'type': 2,
@@ -41,7 +43,7 @@ def server_formatter(server, interfaces=[]):
     else:
         r['boot'] = {
             'type': 1,
-            'volumeId': r['volumeArray'][0]
+            'volumeId': r['volumeArray'][0]['volumeId']
         }
     if server.metadata:
         r["metadata"] = [{'keyName': k, 'value': v}
