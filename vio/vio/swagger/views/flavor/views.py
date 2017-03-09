@@ -23,7 +23,6 @@ from vio.swagger import nova_utils
 class FlavorsView(APIView):
 
     def post(self, request, vimid, tenantid):
-        import pdb;pdb.set_trace()
         create_req = json.loads(request.body)
 
         vim_info = extsys.get_vim_by_id(vimid)
@@ -40,7 +39,9 @@ class FlavorsView(APIView):
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
-               'flavor': flavor_dict}
+               'tenantId': tenantid,
+               'returnCode': 1}
+        rsp.update(flavor_dict)
         return Response(data=rsp, status=status.HTTP_200_OK)
 
     def get(self, request, vimid, tenantid):
@@ -81,8 +82,8 @@ class FlavorView(APIView):
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
-               'flavor': flavor_dict}
-
+               'tenantId': tenantid}
+        rsp.update(flavor_dict)
         return Response(data=rsp, status=status.HTTP_200_OK)
 
     def delete(self, request, vimid, tenantid, flavorid):
