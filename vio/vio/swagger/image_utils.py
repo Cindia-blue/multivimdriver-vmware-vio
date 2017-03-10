@@ -25,14 +25,16 @@ def image_formatter(image):
 
 
 def vim_formatter(vim_info, tenantid):
+
     rsp = {}
-    rsp['vimid'] = vim_info.get('vimId')
+    rsp['vimId'] = vim_info.get('vimId')
     rsp['vimName'] = vim_info.get('name')
-    rsp['tenantid'] = tenantid
+    rsp['tenantId'] = tenantid
     return rsp
 
 
 def sdk_param_formatter(data):
+
     param = {}
     param['username'] = data.get('userName')
     param['password'] = data.get('password')
@@ -40,4 +42,14 @@ def sdk_param_formatter(data):
     param['project_name'] = data.get('tenant')
     param['user_domain_name'] = 'default'
     param['project_domain_name'] = 'default'
+    return param
+
+def req_body_formatter(body):
+
+    param = {}
+    param['name'] = body.get('name')
+    param['disk_format'] = body.get('imageType')
+    param['container_format'] = body.get('containerFormat')
+    param['visibility'] = body.get('visibility')
+    param['imagePath'] = body.get('imagePath')
     return param

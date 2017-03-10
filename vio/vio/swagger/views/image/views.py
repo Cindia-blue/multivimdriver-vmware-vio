@@ -19,36 +19,37 @@ from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.glance import OperateImage
 from vio.swagger import image_utils
 
+
 class GetDeleteImageView(APIView):
 
     def get(self, request, vimid, tenantid, imageid):
-        vim_info = extsys.get_vim_by_id(vimid)
 
-        image_op = OperateImage.OperateImage()
-        image = image_op.get_vim_image(vim_info, imageid)
+        vim_info = extsys.get_vim_by_id(vimid)
+        image_op = OperateImage.OperateImage(vim_info)
+        image = image_op.get_vim_image(imageid)
+
         vim_rsp = image_utils.vim_formatter(vim_info, tenantid)
         rsp = image_utils.image_formatter(image)
         rsp.update(vim_rsp)
-        return Response(data=rsp, status=status.HTTP_200_OK)
 
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
     def delete(self, request, vimid, tenantid, imageid):
+
         vim_info = extsys.get_vim_by_id(vimid)
+        image_op = OperateImage.OperateImage(vim_info)
+        image_op.delete_vim_image(imageid)
 
-        image_op = OperateImage.OperateImage()
-        image_op.delete_vim_image(vim_info, imageid)
-        rsp = {'204':'no content'}
-        return Response(data=rsp, status=status.HTTP_200_OK)
-
+        return Response(status="204")
 
 class CreateListImagesView(APIView):
 
-
     def get(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
 
-        image_instance = OperateImage.OperateImage()
-        images = image_instance.get_vim_images(vim_info)
+        vim_info = extsys.get_vim_by_id(vimid)
+        query_data = dict(request.query_params)
+        image_instance = OperateImage.OperateImage(vim_info)
+        images = image_instance.get_vim_images(**query_data)
 
         rsp = {}
         rsp['images'] = []
@@ -59,24 +60,27 @@ class CreateListImagesView(APIView):
 
         return Response(data=rsp, status=status.HTTP_200_OK)
 
-
     def post(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
 
-        data = {}
-        data['vimid'] = vim_info['vimId']
-        data['vimName'] = vim_info['name']
-        data['username'] = vim_info['userName']
-        data['password'] = vim_info['password']
-        data['url'] = vim_info['url']
-        data['project_name'] = vim_info['tenant']
+        req_body = json.loads(request.body)
+        vim_rsp = image_utils.vim_formatter(vim_info, tenantid)
+        image_instance = OperateImage.OperateImage(vim_info)
 
-        image_instance = OperateImage.OperateImage()
-        image = image_instance.create_vim_image(data)
+        images = image_instance.get_vim_images()
+        for image in images:
+            if image.name == req_body.get('name'):
+                image_info = image_instance.get_vim_image(image.id)
+                rsp = image_utils.image_formatter(image_info)
+                rsp['returnCode'] = '0'
+                rsp.update(vim_rsp)
+                return Response(data=rsp, status=status.HTTP_200_OK)
 
-        rsp = {}
-        rsp['vimid'] = vim_info['vimId']
-        rsp['vimName'] = vim_info['name']
-        rsp['image'] = []
+        param = image_utils.req_body_formatter(req_body)
+        image = image_instance.create_vim_image(vimid, tenantid, **param)
+
+        rsp = image_utils.image_formatter(image)
+        rsp.update(vim_rsp)
+        rsp['returnCode'] = '1'
 
         return Response(data=rsp, status=status.HTTP_200_OK)

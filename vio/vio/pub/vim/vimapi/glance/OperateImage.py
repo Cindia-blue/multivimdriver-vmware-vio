@@ -1,4 +1,4 @@
-# Copyright 2016 ZTE Corporation.
+# Copyright 2017 VMware, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 
 
 import logging
+import threading
+import urllib2
 
 
 from vio.pub.msapi import extsys
@@ -23,23 +25,76 @@ from vio.swagger import image_utils
 logger = logging.getLogger(__name__)
 
 
+running_threads = {}
+running_thread_lock = threading.Lock()
+
+class imageThread(threading.Thread):
+    def __init__(self, vimid, tenantid, image, imagefd):
+
+        threading.Thread.__init__(self)
+        self.imageid = image.id
+        self.imagefd = imagefd
+        self.vimid = vimid
+        self.tenantid = tenantid
+        self.image = image
+
+
+    def run(self):
+
+        logger.debug("start imagethread")
+        self.transfer_image(self.vimid, self.tenantid, self.image, self.imagefd)
+        running_thread_lock.acquire()
+        running_threads.pop(self.imageid)
+        running_thread_lock.release()
+
+
+    def transfer_image(self, vimid, tenantid, image, imagefd):
+
+        logger.debug("Image----transfer_image")
+        vim_info = extsys.get_vim_by_id(vimid)
+
+        param = image_utils.sdk_param_formatter(vim_info)
+        data = imagefd.read()
+        client = baseclient()
+        client.glance(param).upload_image(data, image)
+
 
 class OperateImage(baseclient):
 
-    def get_vim_images(self, data):
+    def __init__(self, params):
 
-        param = image_utils.sdk_param_formatter(data)
-        images = self.glance(param).list_images()
+        super(OperateImage, self).__init__()
+        self.param = image_utils.sdk_param_formatter(params)
+
+    def get_vim_images(self, **query):
+
+        images = self.glance(self.param).list_images(**query)
         return images
 
-    def get_vim_image(self, data, imageid):
+    def get_vim_image(self, imageid):
 
-        param = image_utils.sdk_param_formatter(data)
-        image = self.glance(param).get_image(imageid)
+        image = self.glance(self.param).get_image(imageid)
         return image
 
-    def delete_vim_image(self, data, imageid):
+    def delete_vim_image(self, imageid):
 
-        param = image_utils.sdk_param_formatter(data)
-        image = self.glance(param).delete_image(imageid)
+        image = self.glance(self.param).delete_image(imageid)
+        return image
+
+    def create_vim_image(self, vimid, tenantid,  **req_body):
+
+        imageurl = req_body.pop('imagePath', None)
+        imagefd = urllib2.urlopen(imageurl)
+
+        image = self.glance(self.param).create_image(**req_body)
+
+        upload_image_thread = imageThread(vimid, tenantid, image, imagefd)
+        logger.debug("launch thread to upload image: %s" % image.id)
+        running_thread_lock.acquire()
+        running_threads[image.id] = image.id
+        running_thread_lock.release()
+        try:
+            upload_image_thread.start()
+        except Exception as ex:
+            pass
         return image
