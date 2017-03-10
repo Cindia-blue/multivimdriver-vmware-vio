@@ -1,4 +1,4 @@
-# Copyright (c) 2017 VMware, Inc.
+# Copyright (c) 2017 vmware, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -516,7 +516,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"m6000_data_out_qeukdtf6g87cnparxi51fa8s6",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "template_name":"m6000_data_out",
                         "properties":{
                             "direction":{
@@ -614,7 +614,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"VFW_57z0ua89aiyl8ncvw7h7mjf34",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VNF.VFW",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VNF.VFW",
                         "template_name":"VFW",
                         "properties":{
                             "is_shared":{
@@ -627,7 +627,7 @@ if __name__ == '__main__':
                             },
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -659,7 +659,7 @@ if __name__ == '__main__':
                             },
                             "id":{
                                 "type_name":"string",
-                                "value":"vcpe_vfw_zte_1_0"
+                                "value":"vcpe_vfw_vmware_1_0"
                             },
                             "nsh_aware":{
                                 "type_name":"boolean",
@@ -762,7 +762,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"m600_tunnel_cp_imwfk5l48ljz0g9knc6d68hv5",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "template_name":"m600_tunnel_cp",
                         "properties":{
                             "direction":{
@@ -938,7 +938,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"m6000_data_in_eldly5txw4frny3cc349uz3nc",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "template_name":"m6000_data_in",
                         "properties":{
                             "direction":{
@@ -1118,7 +1118,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"m600_mnt_cp_l3488y2a8ilyfdn0l89ni4os7",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "template_name":"m600_mnt_cp",
                         "properties":{
                             "direction":{
@@ -1220,7 +1220,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"sfc_data_network_vx3pc1oahn0k0pa5q722yafee",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VL",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VL",
                         "template_name":"sfc_data_network",
                         "properties":{
                             "name":{
@@ -1307,7 +1307,7 @@ if __name__ == '__main__':
                         "properties":{
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -1388,7 +1388,7 @@ if __name__ == '__main__':
                     },
                     {
                         "id":"VNAT_cfdljtspvkp234irka59wgab0",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VNF.VNAT",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VNF.VNAT",
                         "template_name":"VNAT",
                         "properties":{
                             "is_shared":{
@@ -1401,7 +1401,7 @@ if __name__ == '__main__':
                             },
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -1437,7 +1437,7 @@ if __name__ == '__main__':
                             },
                             "id":{
                                 "type_name":"string",
-                                "value":"vcpe_vnat_zte_1"
+                                "value":"vcpe_vnat_vmware_1"
                             },
                             "nsh_aware":{
                                 "type_name":"boolean",
@@ -1547,7 +1547,7 @@ if __name__ == '__main__':
                         "properties":{
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "connection_point":{
                                 "type_name":"list",
@@ -1778,7 +1778,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"m6000_data_out",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -1846,7 +1846,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"VFW",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VNF.VFW",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VNF.VFW",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -1860,7 +1860,7 @@ if __name__ == '__main__':
                             },
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -1892,7 +1892,7 @@ if __name__ == '__main__':
                             },
                             "id":{
                                 "type_name":"string",
-                                "value":"vcpe_vfw_zte_1_0"
+                                "value":"vcpe_vfw_vmware_1_0"
                             },
                             "nsh_aware":{
                                 "type_name":"boolean",
@@ -1963,7 +1963,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"m600_tunnel_cp",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -2085,7 +2085,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"m6000_data_in",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -2210,7 +2210,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"m600_mnt_cp",
-                        "type_name":"tosca.nodes.nfv.ext.zte.CP",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.CP",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -2283,7 +2283,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"sfc_data_network",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VL",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VL",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -2346,7 +2346,7 @@ if __name__ == '__main__':
                         "properties":{
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -2399,7 +2399,7 @@ if __name__ == '__main__':
                     },
                     {
                         "name":"VNAT",
-                        "type_name":"tosca.nodes.nfv.ext.zte.VNF.VNAT",
+                        "type_name":"tosca.nodes.nfv.ext.vmware.VNF.VNAT",
                         "default_instances":1,
                         "min_instances":0,
                         "properties":{
@@ -2413,7 +2413,7 @@ if __name__ == '__main__':
                             },
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "request_reclassification":{
                                 "type_name":"boolean",
@@ -2449,7 +2449,7 @@ if __name__ == '__main__':
                             },
                             "id":{
                                 "type_name":"string",
-                                "value":"vcpe_vnat_zte_1"
+                                "value":"vcpe_vnat_vmware_1"
                             },
                             "nsh_aware":{
                                 "type_name":"boolean",
@@ -2526,7 +2526,7 @@ if __name__ == '__main__':
                         "properties":{
                             "vendor":{
                                 "type_name":"string",
-                                "value":"zte"
+                                "value":"vmware"
                             },
                             "connection_point":{
                                 "type_name":"list",

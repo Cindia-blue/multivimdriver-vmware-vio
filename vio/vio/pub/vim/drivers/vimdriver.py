@@ -1,3 +1,5 @@
+# Copyright (c) 2017 VMware, Inc.
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -24,4 +26,4 @@ class VimDriver(object):
         self.identity = keystone_v3.KeystoneClient
         self.glance = image_v2.GlanceClient
         self.cinder = cinder_v2.CinderClient
-        self.compute = compute
+        self.compute = compute.ComputeClient
