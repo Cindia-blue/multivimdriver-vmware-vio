@@ -1,19 +1,23 @@
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
-# not use this file except in compliance with the License. You may obtain
-# a copy of the License at
+# Copyright 2017 VMware, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
 #         http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-# License for the specific language governing permissions and limitations
-# under the License.
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 
 import logging
 
 from vio.pub.vim.drivers import base
 from vio.pub.vim.drivers.openstacksdk import sdk
+from openstack.image.v2 import image as _image
 
 LOG = logging.getLogger(__name__)
 
@@ -44,19 +48,15 @@ class GlanceClient(base.DriverBase):
     @sdk.translate_exception
     def create_image(self,  **data):
 
-        disk_format = data.get('imageType')
-        container_format = data.get('containerFormat')
+        disk_format = data.pop('disk_format')
+        container_format = data.pop('container_format')
 
         if not all([container_format, disk_format]):
             LOG.error( "Both container_format and disk_format are required")
 
-        param = {}
-        param['name'] = data.get('name')
-        param['visibility'] = data.get('visibility')
-        #param['properties'] = data.get('properties')
         try:
             img = self._proxy._create(_image.Image, disk_format=disk_format,
-                                      container_format=container_format, **param)
+                                      container_format=container_format, **data)
         except Exception as ex:
             pass
         return img
