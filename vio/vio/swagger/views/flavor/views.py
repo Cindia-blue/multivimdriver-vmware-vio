@@ -34,8 +34,12 @@ class FlavorsView(APIView):
                 'project_name': vim_info['tenant']}
 
         flavors_op = OperateFlavors.OperateFlavors()
-        flavor, extra_specs = flavors_op.create_flavor(data, tenantid, create_req)
-        flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
+        try:
+            flavor, extra_specs = flavors_op.create_flavor(data, tenantid, create_req)
+            flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -54,9 +58,13 @@ class FlavorsView(APIView):
                 'project_name': vim_info['tenant']}
 
         flavors_op = OperateFlavors.OperateFlavors()
-        flavors_result = flavors_op.list_flavors(data, tenantid)
-        flavors_dict = [nova_utils.flavor_formatter(flavor, extra)
-                        for flavor, extra in flavors_result]
+        try:
+            flavors_result = flavors_op.list_flavors(data, tenantid)
+            flavors_dict = [nova_utils.flavor_formatter(flavor, extra)
+                            for flavor, extra in flavors_result]
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -77,8 +85,12 @@ class FlavorView(APIView):
                 'project_name': vim_info['tenant']}
 
         flavors_op = OperateFlavors.OperateFlavors()
-        flavor, extra_specs = flavors_op.get_flavor(data, tenantid, flavorid)
-        flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
+        try:
+            flavor, extra_specs = flavors_op.get_flavor(data, tenantid, flavorid)
+            flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -95,5 +107,9 @@ class FlavorView(APIView):
                 'url': vim_info['url'],
                 'project_name': vim_info['tenant']}
         flavors_op = OperateFlavors.OperateFlavors()
-        flavors_op.delete_flavor(data, tenantid, flavorid)
+        try:
+            flavors_op.delete_flavor(data, tenantid, flavorid)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_204_NO_CONTENT)
