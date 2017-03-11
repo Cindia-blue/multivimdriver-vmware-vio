@@ -36,7 +36,11 @@ class ListTenantsView(APIView):
         data['project_name'] = vim_info['tenant']
 
         tenant_instance = OperateTenant.OperateTenant()
-        projects = tenant_instance.get_projects(data)
+        try:
+            projects = tenant_instance.get_projects(data)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {}
         rsp['vimid'] = vim_info['vimId']

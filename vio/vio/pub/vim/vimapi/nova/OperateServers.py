@@ -98,6 +98,17 @@ class OperateServers(OperateNova):
         except exceptions.ResourceNotFound:
             return None
 
+    def find_server(self, data, project_id, server_id):
+        param = {'username': data['username'],
+                 'user_domain_name': 'default',
+                 'project_domain_name': 'default',
+                 'password': data['password'],
+                 'auth_url': data['url'],
+                 'project_id': project_id}
+        server = self.compute(param).find_server(
+            server_id, ignore_missing=True)
+        return server
+
     def delete_server(self, data, project_id, server_id):
         param = {'username': data['username'],
                  'user_domain_name': 'default',
