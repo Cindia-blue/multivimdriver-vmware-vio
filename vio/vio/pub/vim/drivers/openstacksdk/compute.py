@@ -44,6 +44,12 @@ class ComputeClient(base.DriverBase):
         return server
 
     @sdk.translate_exception
+    def find_server(self, server_id, ignore_missing=False):
+        server = self.conn.compute.find_server(
+            server_id, ignore_missing=ignore_missing)
+        return server
+
+    @sdk.translate_exception
     def delete_server(self, server_id, **query):
         self.conn.compute.delete_server(server=server_id)
 
@@ -66,8 +72,9 @@ class ComputeClient(base.DriverBase):
         return self.conn.compute.get_flavor(flavor=flavor_id)
 
     @sdk.translate_exception
-    def find_flavor(self, flavor_id):
-        return self.conn.compute.find_flavor(flavor_id, ignore_missing=False)
+    def find_flavor(self, flavor_id, ignore_missing=False):
+        return self.conn.compute.find_flavor(
+            flavor_id, ignore_missing=ignore_missing)
 
     @sdk.translate_exception
     def delete_flavor(self, flavor_id, **query):
