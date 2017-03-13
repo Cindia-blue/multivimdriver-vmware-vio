@@ -34,9 +34,18 @@ class OperateFlavors(OperateNova):
             "swap": create_req.get('swap', 0),
             "is_public": create_req.get('isPublic', True)
         }
-        # TODO: support extraSpecs
-        return self.request('create_flavor', data,
-                            project_id=project_id, **req), None
+
+        flavor = self.request('create_flavor', data,
+                              project_id=project_id, **req)
+        extra_specs_spec = {l['keyName']: l['value']
+                            for l in create_req.get('extraSpecs', [])}
+        extra_specs = {}
+        if extra_specs_spec:
+            extra_specs = self.request('create_flavor_extra_specs', data,
+                                       project_id=project_id,
+                                       flavor_id=flavor.id,
+                                       extra_specs=extra_specs_spec)
+        return flavor, extra_specs
 
     def list_flavors(self, data, project_id):
         flavors = self.request('list_flavors', data, project_id=project_id)

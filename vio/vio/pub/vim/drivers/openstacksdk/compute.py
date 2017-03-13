@@ -11,13 +11,33 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-import base64
+
 import logging
+
+from openstack import resource2 as resource
+from openstack.compute import compute_service
 
 from vio.pub.vim.drivers import base
 from vio.pub.vim.drivers.openstacksdk import sdk
 
 LOG = logging.getLogger(__name__)
+
+
+class FlavorExtraSpecs(resource.Resource):
+    resources_key = 'os-extra_specs'
+    base_path = '/flavors/%(flavor_id)s/os-extra_specs'
+    service = compute_service.ComputeService()
+
+    #: The ID for the flavor.
+    flavor_id = resource.URI('flavor_id')
+
+    # capabilities
+    allow_create = True
+    allow_get = True
+    allow_delete = True
+    allow_list = True
+
+    extra_specs = resource.Body('extra_specs')
 
 
 class ComputeClient(base.DriverBase):
@@ -82,7 +102,14 @@ class ComputeClient(base.DriverBase):
 
     @sdk.translate_exception
     def get_flavor_extra_specs(self, flavor_id, **query):
-        return None
+        return self.conn.compute._get(FlavorExtraSpecs, flavor_id=flavor_id,
+                                      requires_id=False)
+
+    @sdk.translate_exception
+    def create_flavor_extra_specs(self, flavor_id, extra_specs, **query):
+        return self.conn.compute._create(FlavorExtraSpecs,
+                                         flavor_id=flavor_id,
+                                         extra_specs=extra_specs)
 
     @sdk.translate_exception
     def find_image(self, image_id, ignore_missing=False):
