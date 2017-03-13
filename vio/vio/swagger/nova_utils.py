@@ -69,7 +69,7 @@ def flavor_formatter(flavor, extra_specs):
 
 def extra_specs_formatter(extra_specs):
     return [{"keyName": k, "value": v}
-            for k, v in six.iteritems(extra_specs)]
+            for k, v in six.iteritems(extra_specs.extra_specs)]
 
 
 def server_limits_formatter(limits):
