@@ -30,7 +30,15 @@ class CreateSubnetView(APIView):
         subnet = OperateSubnet.OperateSubnet()
         body = json.loads(request.body)
         try:
-            resp = subnet.create_subnet(vimid, tenantid, body)
+            subnet_name = body.get('name')
+            subnet_id = body.get('id', None)
+            target = subnet_id or subnet_name
+            resp = subnet.list_subnet(vimid, tenantid, target)
+            if resp:
+                resp['returnCode'] = 0
+            else:
+                resp = subnet.create_subnet(vimid, tenantid, body)
+                resp['returnCode'] = 1
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},

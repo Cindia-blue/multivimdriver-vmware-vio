@@ -58,6 +58,8 @@ class OperatePort(BaseNet):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info)
         port = network.port_find(portid)
+        if port is None:
+            return port
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         resp = self._convert(port)
         resp.update(vim_dict)

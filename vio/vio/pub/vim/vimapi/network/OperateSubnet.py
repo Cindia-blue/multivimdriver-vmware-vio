@@ -61,6 +61,8 @@ class OperateSubnet(BaseNet):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info)
         subnet = network.subnet_get(subnetid)
+        if subnet is None:
+            return subnet
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         resp = self._convert(subnet)
         resp.update(vim_dict)

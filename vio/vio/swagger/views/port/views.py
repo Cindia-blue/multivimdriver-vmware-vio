@@ -30,7 +30,15 @@ class CreatePortView(APIView):
         port = OperatePort.OperatePort()
         body = json.loads(request.body)
         try:
-            resp = port.create_port(vimid, tenantid, body)
+            port_name = body.get('name')
+            port_id = body.get('id', None)
+            target = port_id or port_name
+            resp = port.list_port(vimid, tenantid, target)
+            if resp:
+                resp['returnCode'] = 0
+            else:
+                resp = port.create_port(vimid, tenantid, body)
+                resp['returnCode'] = 1
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},
