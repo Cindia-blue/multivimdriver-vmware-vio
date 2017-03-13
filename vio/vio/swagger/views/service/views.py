@@ -34,11 +34,16 @@ class HostsView(APIView):
                 'project_name': vim_info['tenant']}
 
         services_op = OperateService.OperateService()
+        try:
+            hosts = [nova_utils.service_formatter(svc)
+                     for svc in services_op.list_services(data, tenantid)]
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid,
-               'hosts': [nova_utils.service_formatter(svc)
-                         for svc in services_op.list_services(data, tenantid)]}
+               'hosts': hosts}
 
         return Response(data=rsp, status=status.HTTP_200_OK)

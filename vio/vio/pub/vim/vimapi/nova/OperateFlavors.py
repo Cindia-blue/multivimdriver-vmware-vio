@@ -59,6 +59,17 @@ class OperateFlavors(OperateNova):
         except exceptions.ResourceNotFound:
             return None, None
 
+    def find_flavor(self, data, project_id, flavor_id):
+        param = {'username': data['username'],
+                 'user_domain_name': 'default',
+                 'project_domain_name': 'default',
+                 'password': data['password'],
+                 'auth_url': data['url'],
+                 'project_id': project_id}
+        cc = self.compute(param)
+        flavor = cc.find_flavor(flavor_id, ignore_missing=True)
+        return flavor
+
     def delete_flavor(self, data, project_id, flavor_id):
         return self.request('delete_flavor', data, project_id=project_id,
                             flavor_id=flavor_id)

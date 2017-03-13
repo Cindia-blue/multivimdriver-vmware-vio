@@ -35,7 +35,11 @@ class HostView(APIView):
                 'project_name': vim_info['tenant']}
 
         hypervisor_op = OperateHypervisor.OperateHypervisor()
-        hv = hypervisor_op.get_hypervisor(data, hypervisor=hostname)
+        try:
+            hv = hypervisor_op.get_hypervisor(data, hypervisor=hostname)
+        except Exception as e:
+            return Response(data={'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
