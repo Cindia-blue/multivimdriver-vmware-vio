@@ -82,7 +82,6 @@ class CreateListVolumeView(APIView):
     def post(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
         volume_op = OperateVolume.OperateVolume(vim_info)
-        image_op = OperateImage.OperateImage(vim_info)
 
         try:
             volumes_detail = volume_op.get_vim_volumes()
@@ -97,6 +96,7 @@ class CreateListVolumeView(APIView):
                     rsp.update(vim_rsp)
                     return Response(data=rsp, status=status.HTTP_200_OK)
 
+            image_op = OperateImage.OperateImage(vim_info)
             imageName = json_body.get('imageName')
             image = image_op.find_vim_image(imageName)
             json_body['imageName'] = image.id
