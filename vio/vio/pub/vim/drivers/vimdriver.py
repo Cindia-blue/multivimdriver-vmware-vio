@@ -13,10 +13,10 @@
 # under the License.
 
 
-from vio.pub.vim.drivers.openstacksdk import image_v2
-from vio.pub.vim.drivers.openstacksdk import keystone_v3
-from vio.pub.vim.drivers.openstacksdk import cinder_v2
-from vio.pub.vim.drivers.openstacksdk import compute
+from vio.pub.vim.drivers.vimsdk import image_v2
+from vio.pub.vim.drivers.vimsdk import keystone_v3
+from vio.pub.vim.drivers.vimsdk import cinder_v2
+from vio.pub.vim.drivers.vimsdk import compute
 
 
 class VimDriver(object):
