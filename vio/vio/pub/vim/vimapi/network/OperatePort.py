@@ -41,7 +41,7 @@ class OperatePort(BaseNet):
         result['name'] = port.name
         result['vnicType'] = port.binding_vnic_type
         result['macAddress'] = port.mac_address
-        result['subnetId'] = port.subnet_id
+        result['subnetId'] = port.subnet_id or port.fixed_ips[0]['subnet_id']
         result['securityGroups'] = port.security_group_ids
         return result
 
