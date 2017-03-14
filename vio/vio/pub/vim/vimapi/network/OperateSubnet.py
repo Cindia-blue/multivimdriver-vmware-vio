@@ -27,7 +27,8 @@ class OperateSubnet(BaseNet):
                     "gaetwayIp": "gateway_ip",
                     "dnsNameservers": "dns_nameservers",
                     "hostRoutes": "host_routes",
-                    "allocationPools": "allocation_pools"
+                    "allocationPools": "allocation_pools",
+                    "enableDhcp": "is_dhcp_enabled"
                     }
 
     def ___init__(self, params):
