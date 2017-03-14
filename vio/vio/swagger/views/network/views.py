@@ -30,7 +30,15 @@ class CreateNetworkView(APIView):
         net = OperateNetwork.OperateNetwork()
         body = json.loads(request.body)
         try:
-            resp = net.create_network(vimid, tenantid, body)
+            network_name = body.get('name')
+            network_id = body.get('id', None)
+            target = network_id or network_name
+            resp = net.list_network(vimid, tenantid, target)
+            if resp:
+                resp['returnCode'] = 0
+            else:
+                resp = net.create_network(vimid, tenantid, body)
+                resp['returnCode'] = 1
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},

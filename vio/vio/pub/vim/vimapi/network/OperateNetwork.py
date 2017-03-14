@@ -88,6 +88,8 @@ class OperateNetwork(BaseNet):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info)
         net = network.network_get(networkid)
+        if net is None:
+            return net
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         resp = self._convert(net)
         resp.update(vim_dict)
