@@ -26,13 +26,13 @@ class FlavorsView(APIView):
         create_req = json.loads(request.body)
 
         vim_info = extsys.get_vim_by_id(vimid)
-        data = {'vimid': vim_info['vimId'],
+        data = {'vimId': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
                 'url': vim_info['url'],
                 'project_name': vim_info['tenant']}
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
         flavor_name = create_req.get('name', None)
@@ -58,7 +58,7 @@ class FlavorsView(APIView):
 
     def get(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
-        data = {'vimid': vim_info['vimId'],
+        data = {'vimId': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
@@ -74,8 +74,9 @@ class FlavorsView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
+               'tenantId': tenantid,
                'flavors': flavors_dict}
 
         return Response(data=rsp, status=status.HTTP_200_OK)
@@ -85,7 +86,7 @@ class FlavorView(APIView):
 
     def get(self, request, vimid, tenantid, flavorid):
         vim_info = extsys.get_vim_by_id(vimid)
-        data = {'vimid': vim_info['vimId'],
+        data = {'vimId': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
@@ -100,7 +101,7 @@ class FlavorView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
         rsp.update(flavor_dict)
@@ -108,7 +109,7 @@ class FlavorView(APIView):
 
     def delete(self, request, vimid, tenantid, flavorid):
         vim_info = extsys.get_vim_by_id(vimid)
-        data = {'vimid': vim_info['vimId'],
+        data = {'vimId': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],

@@ -24,7 +24,7 @@ class LimitsView(APIView):
 
     def get(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
-        data = {'vimid': vim_info['vimId'],
+        data = {'vimId': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
@@ -38,7 +38,7 @@ class LimitsView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
         rsp.update(nova_utils.server_limits_formatter(server_limits))
