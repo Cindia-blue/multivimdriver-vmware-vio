@@ -28,7 +28,7 @@ class ListTenantsView(APIView):
         vim_info = extsys.get_vim_by_id(vimid)
 
         data = {}
-        data['vimid'] = vim_info['vimId']
+        data['vimId'] = vim_info['vimId']
         data['vimName'] = vim_info['name']
         data['username'] = vim_info['userName']
         data['password'] = vim_info['password']
@@ -43,7 +43,7 @@ class ListTenantsView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {}
-        rsp['vimid'] = vim_info['vimId']
+        rsp['vimId'] = vim_info['vimId']
         rsp['vimName'] = vim_info['name']
         rsp['tenants'] = []
 
