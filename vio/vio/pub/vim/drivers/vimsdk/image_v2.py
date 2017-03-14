@@ -39,6 +39,12 @@ class GlanceClient(base.DriverBase):
         image = self._proxy.get_image(imageid)
         return image
 
+
+    @sdk.translate_exception
+    def find_image(self, name_or_id):
+        image = self._proxy.find_image(name_or_id, ignore_missing=False)
+        return image
+
     @sdk.translate_exception
     def delete_image(self, imageid):
         self._proxy.delete_image(imageid)

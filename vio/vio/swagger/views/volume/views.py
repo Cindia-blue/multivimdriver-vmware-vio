@@ -20,6 +20,7 @@ from rest_framework.views import APIView
 
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.cinder import OperateVolume
+from vio.pub.vim.vimapi.glance import OperateImage
 
 from vio.swagger import volume_utils
 
@@ -81,6 +82,7 @@ class CreateListVolumeView(APIView):
     def post(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
         volume_op = OperateVolume.OperateVolume(vim_info)
+        image_op = OperateImage.OperateImage(vim_info)
 
         try:
             volumes_detail = volume_op.get_vim_volumes()
@@ -95,7 +97,11 @@ class CreateListVolumeView(APIView):
                     rsp.update(vim_rsp)
                     return Response(data=rsp, status=status.HTTP_200_OK)
 
+            imageName = json_body.get('imageName')
+            image = image_op.find_vim_image(imageName)
+            json_body['imageName'] = image.id
             param = volume_utils.req_body_formatter(json_body)
+
             volume_info = volume_op.create_vim_volume(**param)
             rsp  = volume_utils.volume_formatter(volume_info)
             rsp['returnCode'] = 1

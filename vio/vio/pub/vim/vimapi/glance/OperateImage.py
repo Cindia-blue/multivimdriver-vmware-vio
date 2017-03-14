@@ -74,6 +74,11 @@ class OperateImage(baseclient):
         image = self.glance(self.param).get_image(imageid)
         return image
 
+    def find_vim_image(self, name_or_id):
+
+        image = self.glance(self.param).find_image(name_or_id)
+        return image
+
     def delete_vim_image(self, imageid):
 
         image = self.glance(self.param).delete_image(imageid)
