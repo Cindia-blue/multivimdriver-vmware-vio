@@ -28,7 +28,11 @@ class CreateSubnetView(APIView):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
         subnet = OperateSubnet.OperateSubnet()
-        body = json.loads(request.body)
+        try:
+            body = json.loads(request.body)
+        except Exception as e:
+            return Response(data={'error': 'Fail to decode request body.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
             subnet_name = body.get('name')
             subnet_id = body.get('id', None)
