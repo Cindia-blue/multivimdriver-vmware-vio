@@ -48,7 +48,11 @@ Check http://localhost/openoapi/multivim-vio/v1/swagger.json
 
 docker exec -it multivim-driver-vio /bin/bash
 
+backup the config.py under /service/vio/vio/pub/config
+
 replace the /service/vio by code from github
+
+then recover the config.py with the one you just backup
 
 Please commit into your change to GitHub firstly before push to the OPENO gerrit repo:
 
