@@ -81,11 +81,13 @@ class CreateListVolumeView(APIView):
     def post(self, request, vimid, tenantid):
         vim_info = extsys.get_vim_by_id(vimid)
         volume_op = OperateVolume.OperateVolume(vim_info)
-
+        try:
+            json_body = json.loads(request.body)
+        except Exception as e:
+            return Response(data={'error': 'Fail to decode request body.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
             volumes_detail = volume_op.get_vim_volumes()
-            json_body = json.loads(request.body)
-
             vim_rsp = volume_utils.vim_formatter(vim_info, tenantid)
             for volume in volumes_detail:
                 if volume.name == json_body.get('name'):

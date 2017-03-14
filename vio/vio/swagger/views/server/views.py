@@ -26,7 +26,11 @@ logger = logging.getLogger(__name__)
 class ListServersView(APIView):
 
     def post(self, request, vimid, tenantid):
-        create_req = json.loads(request.body)
+        try:
+            create_req = json.loads(request.body)
+        except Exception as e:
+            return Response(data={'error': 'Fail to decode request body.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         vim_info = extsys.get_vim_by_id(vimid)
         data = {'vimid': vim_info['vimId'],
