@@ -84,7 +84,7 @@ class ListServersView(APIView):
             servers_resp.append(nova_utils.server_formatter(
                 server, interfaces=intfs))
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'servers': servers_resp}
 
@@ -111,7 +111,7 @@ class GetServerView(APIView):
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        rsp = {'vimid': vim_info['vimId'],
+        rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
         rsp.update(server_dict)
