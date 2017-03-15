@@ -37,7 +37,7 @@ class CreateSubnetView(APIView):
             subnet_name = body.get('name')
             subnet_id = body.get('id', None)
             target = subnet_id or subnet_name
-            resp = subnet.list_subnet(vimid, tenantid, target)
+            resp = subnet.list_subnet(vimid, tenantid, target, ignore_missing=True)
             if resp:
                 resp['returnCode'] = 0
             else:
