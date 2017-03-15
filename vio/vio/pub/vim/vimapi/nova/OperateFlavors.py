@@ -39,7 +39,7 @@ class OperateFlavors(OperateNova):
                               project_id=project_id, **req)
         extra_specs_spec = {l['keyName']: l['value']
                             for l in create_req.get('extraSpecs', [])}
-        extra_specs = {}
+        extra_specs = None
         if extra_specs_spec:
             extra_specs = self.request('create_flavor_extra_specs', data,
                                        project_id=project_id,
