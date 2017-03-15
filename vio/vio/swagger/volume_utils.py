@@ -61,8 +61,10 @@ def req_body_formatter(body):
 
     param = {}
     param['size'] = body.get('volumeSize')
-    param['volume_type'] = body.get('volumeType')
+    if body.get('volumeType'):
+        param['volume_type'] = body.get('volumeType')
     param['name'] = body.get('name')
-    param['availability_zone'] = body.get('availabilityZone')
+    if body.get('availabilityZone'):
+        param['availability_zone'] = body.get('availabilityZone')
     param['image_id'] = body.get('imageName')
     return param

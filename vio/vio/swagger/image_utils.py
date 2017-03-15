@@ -15,8 +15,11 @@ def image_formatter(image):
 
     image = image.to_dict()
     properties = {}
-    properties['vmware_adaptertype'] = image.get("vmware_adaptertype")
-    properties['vmware_ostype'] = image.get("vmware_ostype")
+    if image.get("vmware_adaptertype"):
+        properties['vmware_adaptertype'] = image.get("vmware_adaptertype")
+    if image.get("vmware_ostype"):
+        properties['vmware_ostype'] = image.get("vmware_ostype")
+
     return {
         'id' : image.get("id"),
         'name' : image.get("name"),
@@ -57,6 +60,7 @@ def req_body_formatter(body):
     param['container_format'] = body.get('containerFormat')
     param['visibility'] = body.get('visibility')
     param['imagePath'] = body.get('imagePath')
-    param['vmware_adaptertype'] = body.get('properties').get('vmware_adaptertype')
-    param['vmware_ostype'] = body.get('properties').get('vmware_ostype')
+    if body.get('properties'):
+        param['vmware_adaptertype'] = body.get('properties').get('vmware_adaptertype')
+        param['vmware_ostype'] = body.get('properties').get('vmware_ostype')
     return param
