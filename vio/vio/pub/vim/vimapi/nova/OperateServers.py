@@ -65,14 +65,14 @@ class OperateServers(OperateNova):
         volumes = create_req.get('volumeArray', [])
         return cc.create_server(**req)
 
-    def list_servers(self, data, project_id):
+    def list_servers(self, data, project_id, **query):
         param = {'username': data['username'],
                  'user_domain_name': 'default',
                  'project_domain_name': 'default',
                  'password': data['password'],
                  'auth_url': data['url'],
                  'project_id': project_id}
-        projects = self.compute(param).list_servers()
+        projects = self.compute(param).list_servers(**query)
         return projects
 
     def list_server_interfaces(self, data, project_id, server):

@@ -51,9 +51,10 @@ class CreateNetworkView(APIView):
     def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
+        query = dict(request.query_params)
         net = OperateNetwork.OperateNetwork()
         try:
-            resp = net.list_networks(vimid, tenantid)
+            resp = net.list_networks(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},

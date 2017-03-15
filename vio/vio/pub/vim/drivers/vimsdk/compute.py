@@ -52,8 +52,8 @@ class ComputeClient(base.DriverBase):
         return server
 
     @sdk.translate_exception
-    def list_servers(self):
-        servers = self.conn.compute.servers()
+    def list_servers(self, **query):
+        servers = self.conn.compute.servers(**query)
         return servers
 
     @sdk.translate_exception
@@ -78,7 +78,7 @@ class ComputeClient(base.DriverBase):
 
     @sdk.translate_exception
     def list_flavors(self, **query):
-        flavors = self.conn.compute.flavors()
+        flavors = self.conn.compute.flavors(**query)
         return flavors
 
     @sdk.translate_exception
@@ -123,5 +123,5 @@ class ComputeClient(base.DriverBase):
         return self.conn.compute.services()
 
     @sdk.translate_exception
-    def get_hypervisor(self, hypervisor, **kwargs):
-        return self.conn.compute.get_hypervisor(hypervisor=hypervisor)
+    def get_hypervisor(self, hypervisor, **query):
+        return self.conn.compute.get_hypervisor(hypervisor=hypervisor, **query)

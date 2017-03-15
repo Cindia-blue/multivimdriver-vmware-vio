@@ -68,10 +68,10 @@ class FlavorsView(APIView):
                 'password': vim_info['password'],
                 'url': vim_info['url'],
                 'project_name': vim_info['tenant']}
-
+        query = dict(request.query_params)
         flavors_op = OperateFlavors.OperateFlavors()
         try:
-            flavors_result = flavors_op.list_flavors(data, tenantid)
+            flavors_result = flavors_op.list_flavors(data, tenantid, **query)
             flavors_dict = [nova_utils.flavor_formatter(flavor, extra)
                             for flavor, extra in flavors_result]
         except Exception as e:

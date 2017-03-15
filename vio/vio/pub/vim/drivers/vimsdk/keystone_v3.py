@@ -27,6 +27,6 @@ class KeystoneClient(base.DriverBase):
         self.session = self.conn.session
 
     @sdk.translate_exception
-    def project_list(self):
-        projects = self.conn.identity.projects()
+    def project_list(self, **query):
+        projects = self.conn.identity.projects(**query)
         return projects
