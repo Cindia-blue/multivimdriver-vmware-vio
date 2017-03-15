@@ -114,6 +114,12 @@ class CreateListVolumeView(APIView):
                     rsp.update(vim_rsp)
                     return Response(data=rsp, status=status.HTTP_200_OK)
 
+            if body.get('imageName'):
+                image_op = OperateImage.OperateImage(vim_info)
+                imageName = body.get('imageName')
+                image = image_op.find_vim_image(imageName)
+                body['imageId'] = image.id
+
             param = volume_utils.req_body_formatter(body)
 
             volume_info = volume_op.create_vim_volume(**param)
