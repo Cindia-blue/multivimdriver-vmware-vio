@@ -37,7 +37,7 @@ class CreatePortView(APIView):
             port_name = body.get('name')
             port_id = body.get('id', None)
             target = port_id or port_name
-            resp = port.list_port(vimid, tenantid, target)
+            resp = port.list_port(vimid, tenantid, target, ignore_missing=True)
             if resp:
                 resp['returnCode'] = 0
             else:
