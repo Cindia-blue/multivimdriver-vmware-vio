@@ -54,7 +54,7 @@ def server_formatter(server, interfaces=[]):
 
 
 def flavor_formatter(flavor, extra_specs):
-    return {
+    r = {
         "id": flavor.id,
         "name": flavor.name,
         "vcpu": flavor.vcpus,
@@ -62,9 +62,10 @@ def flavor_formatter(flavor, extra_specs):
         "disk": flavor.disk,
         "ephemeral": flavor.ephemeral,
         "swap": flavor.swap,
-        "isPublic": flavor.is_public,
-        "extraSpecs": extra_specs_formatter(extra_specs)
-    }
+        "isPublic": flavor.is_public}
+    if extra_specs:
+        r["extraSpecs"] = extra_specs_formatter(extra_specs)
+    return r
 
 
 def extra_specs_formatter(extra_specs):
