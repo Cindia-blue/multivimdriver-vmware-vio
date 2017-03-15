@@ -105,7 +105,9 @@ class CreateListImagesView(APIView):
                     return Response(data=rsp, status=status.HTTP_200_OK)
 
             param = image_utils.req_body_formatter(req_body)
-            image = image_instance.create_vim_image(vimid, tenantid, **param)
+            image = image_instance.create_vim_image(vimid, tenantid,
+                                                    imagePath=req_body.get('imagePath'),
+                                                    **param)
 
             rsp = image_utils.image_formatter(image)
             rsp.update(vim_rsp)

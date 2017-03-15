@@ -56,13 +56,10 @@ class GlanceClient(base.DriverBase):
         container_format = data.pop('container_format')
 
         if not all([container_format, disk_format]):
-            LOG.error( "Both container_format and disk_format are required")
+            raise Exception("Both container_format and disk_format are required")
 
-        try:
-            img = self._proxy._create(_image.Image, disk_format=disk_format,
-                                      container_format=container_format, **data)
-        except Exception as ex:
-            pass
+        img = self._proxy._create(_image.Image, disk_format=disk_format,
+                                  container_format=container_format, **data)
         return img
 
     @sdk.translate_exception
