@@ -66,5 +66,5 @@ def req_body_formatter(body):
     param['name'] = body.get('name')
     if body.get('availabilityZone'):
         param['availability_zone'] = body.get('availabilityZone')
-    param['image_id'] = body.get('imageName')
+    param['image_id'] = body.get('imageId')
     return param
