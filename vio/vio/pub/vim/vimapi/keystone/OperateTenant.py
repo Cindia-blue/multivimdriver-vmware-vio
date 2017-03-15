@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 class OperateTenant(baseclient):
 
-    def get_projects(self, data):
+    def get_projects(self, data, **query):
         param = {}
         param['username'] = data['username']
         param['user_domain_name'] = 'default'
@@ -31,6 +31,6 @@ class OperateTenant(baseclient):
         param['password'] = data['password']
         param['auth_url'] = data['url']
         param['project_name'] = data['project_name']
-        projects = self.identity(param).project_list()
+        projects = self.identity(param).project_list(**query)
         return projects
 

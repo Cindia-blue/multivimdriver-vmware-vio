@@ -51,9 +51,10 @@ class CreateSubnetView(APIView):
     def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
+        query = dict(request.query_params)
         subnet =  OperateSubnet.OperateSubnet()
         try:
-            resp = subnet.list_subnets(vimid, tenantid)
+            resp = subnet.list_subnets(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},

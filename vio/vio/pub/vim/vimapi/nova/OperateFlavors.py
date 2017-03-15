@@ -47,8 +47,8 @@ class OperateFlavors(OperateNova):
                                        extra_specs=extra_specs_spec)
         return flavor, extra_specs
 
-    def list_flavors(self, data, project_id):
-        flavors = self.request('list_flavors', data, project_id=project_id)
+    def list_flavors(self, data, project_id, **query):
+        flavors = self.request('list_flavors', data, project_id=project_id, **query)
         flavors = list(flavors)
         result = []
         for flavor in flavors:

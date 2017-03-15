@@ -51,9 +51,10 @@ class CreatePortView(APIView):
     def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
                     syscomm.fun_name(), request.method, vimid)
+        query = dict(request.query_params)
         port = OperatePort.OperatePort()
         try:
-            resp = port.list_ports(vimid, tenantid)
+            resp = port.list_ports(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response(data={'error': str(e)},

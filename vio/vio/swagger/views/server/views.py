@@ -70,10 +70,10 @@ class ListServersView(APIView):
                 'password': vim_info['password'],
                 'url': vim_info['url'],
                 'project_name': vim_info['tenant']}
-
+        query = dict(request.query_params)
         servers_op = OperateServers.OperateServers()
         try:
-            servers = servers_op.list_servers(data, tenantid)
+            servers = servers_op.list_servers(data, tenantid, **query)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
