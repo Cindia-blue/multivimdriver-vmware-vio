@@ -60,11 +60,13 @@ def sdk_param_formatter(data):
 def req_body_formatter(body):
 
     param = {}
+    param['name'] = body.get('name')
     param['size'] = body.get('volumeSize')
+
     if body.get('volumeType'):
         param['volume_type'] = body.get('volumeType')
-    param['name'] = body.get('name')
     if body.get('availabilityZone'):
         param['availability_zone'] = body.get('availabilityZone')
-    param['image_id'] = body.get('imageId')
+    if body.get('imageId'):
+        param['image_id'] = body.get('imageId')
     return param
