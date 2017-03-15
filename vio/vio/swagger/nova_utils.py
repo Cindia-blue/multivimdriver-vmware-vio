@@ -28,6 +28,7 @@ def server_formatter(server, interfaces=[]):
         "contextArray": [],
         "userdata": server.user_data,
         "nicArray": [],
+        "status": server.status
     }
     if interfaces:
         r['nicArray'] = [{'portId': i.port_id} for i in interfaces]
