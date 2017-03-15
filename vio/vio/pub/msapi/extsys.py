@@ -13,6 +13,7 @@
 import json
 import logging
 
+from rest_framework import status
 from vio.pub.exceptions import VimDriverVioException
 from vio.pub.utils.restcall import req_by_msb
 
@@ -31,5 +32,6 @@ def get_vim_by_id(vim_id):
     ret = req_by_msb("/openoapi/extsys/v1/vims/%s" % vim_id, "GET")
     if ret[0] != 0:
         logger.error("Status code is %s, detail is %s.", ret[2], ret[1])
-        raise VimDriverVioException("Failed to query VIM with id (%s) from extsys." % vim_id)
+        raise VimDriverVioException("Failed to query VIM with id (%s) from extsys." % vim_id,
+                                    status.HTTP_404_NOT_FOUND)
     return json.JSONDecoder().decode(ret[1])

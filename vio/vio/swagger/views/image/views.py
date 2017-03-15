@@ -19,12 +19,16 @@ from rest_framework.views import APIView
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.glance import OperateImage
 from vio.swagger import image_utils
-
+from vio.pub.exceptions import VimDriverVioException
 
 class GetDeleteImageView(APIView):
 
     def get(self, request, vimid, tenantid, imageid):
-        vim_info = extsys.get_vim_by_id(vimid)
+        try:
+            vim_info = extsys.get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            return Response(data={'error': str(e)}, status=e.status_code)
+
         image_op = OperateImage.OperateImage(vim_info)
 
         try:
@@ -38,7 +42,11 @@ class GetDeleteImageView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, imageid):
-        vim_info = extsys.get_vim_by_id(vimid)
+        try:
+            vim_info = extsys.get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            return Response(data={'error': str(e)}, status=e.status_code)
+
         image_op = OperateImage.OperateImage(vim_info)
 
         try:
@@ -51,7 +59,11 @@ class GetDeleteImageView(APIView):
 class CreateListImagesView(APIView):
 
     def get(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
+        try:
+            vim_info = extsys.get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            return Response(data={'error': str(e)}, status=e.status_code)
+
         query_data = dict(request.query_params)
         image_instance = OperateImage.OperateImage(vim_info)
 
@@ -69,7 +81,11 @@ class CreateListImagesView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
+        try:
+            vim_info = extsys.get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            return Response(data={'error': str(e)}, status=e.status_code)
+
         try:
             req_body = json.loads(request.body)
         except Exception as e:

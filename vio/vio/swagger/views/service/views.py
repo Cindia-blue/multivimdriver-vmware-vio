@@ -18,14 +18,18 @@ from rest_framework.views import APIView
 from vio.pub.msapi import extsys
 from vio.pub.vim.vimapi.nova import OperateServers
 from vio.pub.vim.vimapi.nova import OperateService
-
+from vio.pub.exceptions import VimDriverVioException
 from vio.swagger import nova_utils
 
 
 class HostsView(APIView):
 
     def get(self, request, vimid, tenantid):
-        vim_info = extsys.get_vim_by_id(vimid)
+        try:
+            vim_info = extsys.get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            return Response(data={'error': str(e)}, status=e.status_code)
+
         data = {'vimid': vim_info['vimId'],
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
