@@ -12,9 +12,11 @@
 
 import logging
 
+from rest_framework import status
+
 from vio.pub.msapi.extsys import get_vim_by_id
 from vio.pub.vim.drivers.vimsdk import neutron_v2_0
-
+from vio.pub.exceptions import VimDriverVioException
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,12 @@ def translate(mapping, data, revert=True):
 
 class BaseNet(object):
     def get_vim_info(self, vimid):
-        return get_vim_by_id(vimid)
+        try:
+            vim_info = get_vim_by_id(vimid)
+        except VimDriverVioException as e:
+            raise VimDriverVioException("Failed to query VIM with id (%s) from extsys." % vimid,
+                                        status.HTTP_404_NOT_FOUND)
+        return vim_info
 
     def auth(self, vim_info):
         param = {}
