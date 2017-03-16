@@ -60,7 +60,9 @@ class OperateServers(OperateNova):
             req['user_data'] = base64.encodestring(userdata)
         sg = create_req.get('securityGroups', [])
         if sg:
-            req['security_groups'] = sg
+            req['security_groups'] = []
+            for v in sg:
+                req['security_groups'].append({'name':v})
         # todo attach volumes after server created
         volumes = create_req.get('volumeArray', [])
         return cc.create_server(**req)
