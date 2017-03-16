@@ -59,8 +59,6 @@ def req_body_formatter(body):
     param['disk_format'] = body.get('imageType')
     param['container_format'] = body.get('containerFormat')
     param['visibility'] = body.get('visibility')
-    param['imagePath'] = body.get('imagePath')
-    if body.get('properties'):
-        param['vmware_adaptertype'] = body.get('properties').get('vmware_adaptertype')
-        param['vmware_ostype'] = body.get('properties').get('vmware_ostype')
+    properties = body.get('properties', {})
+    param.update(properties)
     return param
