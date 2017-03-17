@@ -26,7 +26,7 @@ class OperatePort(BaseNet):
                     "vnicType": "binding:vnic_type",
                     "securityGroups": "security_groups",
                     "macAddress": "mac_address",
-                    "subnetId": "subnet_id",
+                    # "subnetId": "subnet_id",
                     "ip": "ip_address"
                     }
 
@@ -41,7 +41,11 @@ class OperatePort(BaseNet):
         result['name'] = port.name
         result['vnicType'] = port.binding_vnic_type
         result['macAddress'] = port.mac_address
-        result['subnetId'] = port.subnet_id or port.fixed_ips[0]['subnet_id']
+        if port.fixed_ips:
+            subnet_id = port.fixed_ips[0]['subnet_id']
+        else:
+            subnet_id = port.subnet_id
+        result['subnetId'] = subnet_id
         result['securityGroups'] = port.security_group_ids
         return result
 
@@ -49,6 +53,8 @@ class OperatePort(BaseNet):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info)
         body = translate(self.keys_mapping, body)
+        if body.get('subnetId'):
+            body['fixed_ips'] = [{'subnet_id': body.pop('subnetId')}]
         port = network.port_create(**body)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         resp = self._convert(port)
