@@ -34,8 +34,14 @@ def server_formatter(server, interfaces=[]):
         r['nicArray'] = [{'portId': i.port_id} for i in interfaces]
     elif server.networks:
         r['nicArray'] = [{'portId': n['port']} for n in server.networks]
-    if server.attached_volumes:
-        r["volumeArray"] = [{'volumeId': v['id']} for v in server.attached_volumes]
+    # TODO: wait sdk fix block_device_mapping
+    try:
+        if server.attached_volumes:
+            r["volumeArray"] = [{'volumeId': v['id']} for v in server.attached_volumes]
+        elif server.block_device_mapping:
+            r["volumeArray"] = [{'volumeId': v['uuid']} for v in server.block_device_mapping]
+    except ValueError as e:
+        r['volumeArray'] = [{'volumeId':""}]
     if server.image_id or server.image:
         r['boot'] = {
             'type': 2,
