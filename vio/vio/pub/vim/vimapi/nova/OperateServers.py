@@ -38,12 +38,13 @@ class OperateServers(OperateNova):
         boot_type = boot.get('type')
         if boot_type == 1:
             # boot from vol
-            req['block_device_mapping_v2'] = {
+            req['block_device_mapping_v2'] = [{
+                'boot_index': "0",
                 'uuid': boot["volumeId"],
                 'source_type': 'volume',
                 'destination_type': 'volume',
                 'delete_on_termination': False
-            }
+            }]
         elif boot_type == 2:
             req['imageRef'] = cc.find_image(boot.get('imageId')).id
         networks = create_req.get('nicArray', [])
