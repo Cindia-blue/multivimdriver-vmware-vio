@@ -38,8 +38,11 @@ class GetDeleteImageView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, imageid):
         try:
@@ -53,8 +56,11 @@ class GetDeleteImageView(APIView):
             image_op.delete_vim_image(imageid)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CreateListImagesView(APIView):
 
@@ -77,8 +83,11 @@ class CreateListImagesView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, vimid, tenantid):
         try:
@@ -114,5 +123,8 @@ class CreateListImagesView(APIView):
             rsp['returnCode'] = '1'
             return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -42,8 +42,11 @@ class HostsView(APIView):
             hosts = [nova_utils.service_formatter(svc)
                      for svc in services_op.list_services(data, tenantid)]
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
