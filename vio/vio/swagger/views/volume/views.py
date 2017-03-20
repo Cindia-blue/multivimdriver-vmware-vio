@@ -44,7 +44,11 @@ class GetDeleteVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)}, status=e.http_status)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, volumeid):
         try:
@@ -58,7 +62,11 @@ class GetDeleteVolumeView(APIView):
             volume_op.delete_vim_volume(volumeid)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)}, status=e.http_status)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class CreateListVolumeView(APIView):
@@ -85,7 +93,11 @@ class CreateListVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)}, status=e.http_status)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def post(self, request, vimid, tenantid):
@@ -125,4 +137,8 @@ class CreateListVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            return Response(data={'error': str(e)}, status=e.http_status)
+            if e.http_status:
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
