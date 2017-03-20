@@ -37,7 +37,7 @@ class HostView(APIView):
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
                 'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'project_id': tenantid}
 
         hypervisor_op = OperateHypervisor.OperateHypervisor()
         try:

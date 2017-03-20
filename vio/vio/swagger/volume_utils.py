@@ -51,7 +51,7 @@ def sdk_param_formatter(data):
     param['username'] = data.get('userName')
     param['password'] = data.get('password')
     param['auth_url'] = data.get('url')
-    param['project_name'] = data.get('tenant')
+    param['project_id'] = data.get('tenant')
     param['user_domain_name'] = 'default'
     param['project_domain_name'] = 'default'
     return param
