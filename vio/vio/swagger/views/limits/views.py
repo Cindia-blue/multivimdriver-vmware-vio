@@ -32,8 +32,7 @@ class LimitsView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
 
         servers_op = OperateLimits.OperateLimits()
         try:

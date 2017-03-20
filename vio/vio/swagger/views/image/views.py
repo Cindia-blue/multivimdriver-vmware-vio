@@ -26,6 +26,7 @@ class GetDeleteImageView(APIView):
     def get(self, request, vimid, tenantid, imageid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -47,6 +48,7 @@ class GetDeleteImageView(APIView):
     def delete(self, request, vimid, tenantid, imageid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -67,6 +69,7 @@ class CreateListImagesView(APIView):
     def get(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -92,6 +95,7 @@ class CreateListImagesView(APIView):
     def post(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 

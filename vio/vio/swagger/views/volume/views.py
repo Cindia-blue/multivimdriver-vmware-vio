@@ -32,6 +32,7 @@ class GetDeleteVolumeView(APIView):
     def get(self, request, vimid, tenantid, volumeid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -53,6 +54,7 @@ class GetDeleteVolumeView(APIView):
     def delete(self, request, vimid, tenantid, volumeid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -74,6 +76,7 @@ class CreateListVolumeView(APIView):
     def get(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -103,6 +106,7 @@ class CreateListVolumeView(APIView):
     def post(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 

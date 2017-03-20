@@ -42,8 +42,7 @@ class ListServersView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
@@ -80,8 +79,7 @@ class ListServersView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         query = dict(request.query_params)
         servers_op = OperateServers.OperateServers()
         try:
@@ -118,8 +116,7 @@ class GetServerView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
 
         servers_op = OperateServers.OperateServers()
         try:
@@ -151,8 +148,7 @@ class GetServerView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         try:
             servers_op.delete_server(data, tenantid, serverid)
         except Exception as e:

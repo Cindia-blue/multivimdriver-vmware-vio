@@ -42,14 +42,14 @@ class BaseNet(object):
                                         status.HTTP_404_NOT_FOUND)
         return vim_info
 
-    def auth(self, vim_info):
+    def auth(self, vim_info, tenant_id):
         param = {}
         param['username'] = vim_info['userName']
         param['user_domain_name'] = 'default'
         param['project_domain_name'] = 'default'
         param['password'] = vim_info['password']
         param['auth_url'] = vim_info['url']
-        param['project_name'] = vim_info['tenant']
+        param['project_id'] = tenant_id
         return neutron_v2_0.NeutronClient(param)
 
 
@@ -66,7 +66,7 @@ class OperateNetwork(BaseNet):
                     }
 
     def ___init__(self, params):
-        super(Network, self).__init__(params)
+        super(OperateNetwork, self).__init__(params)
 
     def _convert(self, network):
         result = {}
@@ -84,7 +84,7 @@ class OperateNetwork(BaseNet):
 
     def create_network(self, vimid, tenantid, body):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         body = translate(self.keys_mapping, body)
         net = network.network_create(**body)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
@@ -94,7 +94,7 @@ class OperateNetwork(BaseNet):
 
     def list_network(self, vimid, tenantid, networkid):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         net = network.network_get(networkid)
         if net is None:
             return net
@@ -105,13 +105,12 @@ class OperateNetwork(BaseNet):
 
     def delete_network(self, vimid, tenantid, networkid):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         return network.network_delete(networkid)
 
     def list_networks(self, vimid, tenantid, **query):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
-        query.update({"project_id": tenantid})
+        network = self.auth(vim_info, tenantid)
         resp = network.networks_get(**query)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}
         networks = {'networks': []}

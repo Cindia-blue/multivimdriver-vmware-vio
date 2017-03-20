@@ -51,7 +51,7 @@ class OperateSubnet(BaseNet):
 
     def create_subnet(self, vimid, tenantid, body):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         body = translate(self.keys_mapping, body)
         subnet = network.subnet_create(**body)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId'], "tenantId": tenantid}
@@ -61,7 +61,7 @@ class OperateSubnet(BaseNet):
 
     def list_subnet(self, vimid, tenantid, subnetid, ignore_missing=False):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         subnet = network.subnet_get(subnetid, ignore_missing=ignore_missing)
         if subnet is None:
             return subnet
@@ -72,12 +72,12 @@ class OperateSubnet(BaseNet):
 
     def delete_subnet(self, vimid, tenantid, subnetid):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         return network.subnet_delete(subnetid)
 
     def list_subnets(self, vimid, tenantid, **query):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         query.update({"project_id": tenantid})
         resp = network.subnets_get(**query)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId'], "tenantId": tenantid}

@@ -38,8 +38,7 @@ class FlavorsView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
@@ -77,8 +76,7 @@ class FlavorsView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         query = dict(request.query_params)
         flavors_op = OperateFlavors.OperateFlavors()
         try:
@@ -112,8 +110,7 @@ class FlavorView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
 
         flavors_op = OperateFlavors.OperateFlavors()
         try:
@@ -142,8 +139,7 @@ class FlavorView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         flavors_op = OperateFlavors.OperateFlavors()
         try:
             flavors_op.delete_flavor(data, tenantid, flavorid)
