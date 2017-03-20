@@ -46,6 +46,7 @@ class FlavorsView(APIView):
         flavor_name = create_req.get('name', None)
         flavor_id = create_req.get('id', None)
         flavors_op = OperateFlavors.OperateFlavors()
+        exist = False
         try:
             target = flavor_id or flavor_name
             flavor = flavors_op.find_flavor(data, tenantid, target)
@@ -53,19 +54,23 @@ class FlavorsView(APIView):
                 flavor, extra_specs = flavors_op.get_flavor(
                     data, tenantid, flavor.id)
                 rsp['returnCode'] = 0
+                exist = True
             else:
                 rsp['returnCode'] = 1
                 flavor, extra_specs = flavors_op.create_flavor(
                     data, tenantid, create_req)
             flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         rsp.update(flavor_dict)
-        return Response(data=rsp, status=status.HTTP_200_OK)
+        if exist:
+            return Response(data=rsp, status=status.HTTP_200_OK)
+        else:
+            return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
 
     def get(self, request, vimid, tenantid):
         try:
@@ -86,7 +91,7 @@ class FlavorsView(APIView):
             flavors_dict = [nova_utils.flavor_formatter(flavor, extra)
                             for flavor, extra in flavors_result]
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -120,7 +125,7 @@ class FlavorView(APIView):
             flavor, extra_specs = flavors_op.get_flavor(data, tenantid, flavorid)
             flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -148,7 +153,7 @@ class FlavorView(APIView):
         try:
             flavors_op.delete_flavor(data, tenantid, flavorid)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},

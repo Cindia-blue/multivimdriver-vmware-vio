@@ -40,12 +40,13 @@ class CreateNetworkView(APIView):
             resp = net.list_network(vimid, tenantid, target)
             if resp:
                 resp['returnCode'] = 0
+                return Response(data=resp, status=status.HTTP_200_OK)
             else:
                 resp = net.create_network(vimid, tenantid, body)
                 resp['returnCode'] = 1
-            return Response(data=resp, status=status.HTTP_200_OK)
+                return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -60,7 +61,7 @@ class CreateNetworkView(APIView):
             resp = net.list_networks(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -77,7 +78,7 @@ class DeleteNetworkView(APIView):
             resp = net.list_network(vimid, tenantid, networkid)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -91,7 +92,7 @@ class DeleteNetworkView(APIView):
             resp = net.delete_network(vimid, tenantid, networkid)
             return Response(data=resp, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},

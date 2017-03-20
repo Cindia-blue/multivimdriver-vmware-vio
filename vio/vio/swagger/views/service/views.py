@@ -42,7 +42,7 @@ class HostsView(APIView):
             hosts = [nova_utils.service_formatter(svc)
                      for svc in services_op.list_services(data, tenantid)]
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
