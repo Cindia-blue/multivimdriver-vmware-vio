@@ -66,6 +66,25 @@ class OperateServers(OperateNova):
                 req['security_groups'].append({'name':v})
         # todo attach volumes after server created
         volumes = create_req.get('volumeArray', [])
+        if volumes:
+            if not req.get('block_device_mapping_v2'):
+                req['block_device_mapping_v2'] = []
+            for vol in volumes:
+                req['block_device_mapping_v2'].append(
+                    {
+                        'uuid': vol["volumeId"],
+                        'source_type': 'volume',
+                        'destination_type': 'volume',
+                        'delete_on_termination': False
+                    }
+                )
+        inject_files = create_req.get('contextArray', [])
+        if inject_files:
+            req['personality'] = []
+            for i in inject_files:
+                req['personality'].append(
+                    {"path": i["fileName"], "contents": i["fileData"]})
+
         return cc.create_server(**req)
 
     def list_servers(self, data, project_id, **query):
