@@ -14,7 +14,9 @@ import base64
 import logging
 
 from openstack import exceptions
+from rest_framework import status
 
+from vio.pub.exceptions import VimDriverVioException
 from vio.pub.vim.vimapi.nova.OperateNova import OperateNova
 
 logger = logging.getLogger(__name__)
@@ -31,12 +33,12 @@ class OperateServers(OperateNova):
                  'project_id': project_id}
         cc = self.compute(param)
         req = {
-            "name": create_req.get('name'),
-            "flavorRef": cc.find_flavor(create_req.get('flavorId')).id
+            "name": create_req['name'],
+            "flavorRef": cc.find_flavor(create_req['flavorId']).id
         }
-        boot = create_req.get('boot')
-        boot_type = boot.get('type')
-        if boot_type == 1:
+        boot = create_req['boot']
+        boot_type = boot['type']
+        if int(boot_type) == 1:
             # boot from vol
             req['block_device_mapping_v2'] = [{
                 'boot_index': "0",
@@ -45,8 +47,12 @@ class OperateServers(OperateNova):
                 'destination_type': 'volume',
                 'delete_on_termination': False
             }]
-        elif boot_type == 2:
-            req['imageRef'] = cc.find_image(boot.get('imageId')).id
+        elif int(boot_type) == 2:
+            req['imageRef'] = cc.find_image(boot['imageId']).id
+        else:
+            raise VimDriverVioException(
+                'Boot type should be 1 or 2.',
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         networks = create_req.get('nicArray', [])
         if networks:
             req['networks'] = [{'port': n['portId']} for n in networks]
