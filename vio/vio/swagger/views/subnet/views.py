@@ -40,12 +40,13 @@ class CreateSubnetView(APIView):
             resp = subnet.list_subnet(vimid, tenantid, target, ignore_missing=True)
             if resp:
                 resp['returnCode'] = 0
+                return Response(data=resp, status=status.HTTP_200_OK)
             else:
                 resp = subnet.create_subnet(vimid, tenantid, body)
                 resp['returnCode'] = 1
-            return Response(data=resp, status=status.HTTP_200_OK)
+                return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -60,7 +61,7 @@ class CreateSubnetView(APIView):
             resp = subnet.list_subnets(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -77,7 +78,7 @@ class DeleteSubnetView(APIView):
             resp = subnet.list_subnet(vimid, tenantid, subnetid)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
@@ -91,7 +92,7 @@ class DeleteSubnetView(APIView):
             resp = subnet.delete_subnet(vimid, tenantid, subnetid)
             return Response(data=resp, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},

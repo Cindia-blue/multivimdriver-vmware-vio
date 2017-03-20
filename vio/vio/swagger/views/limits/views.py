@@ -39,7 +39,7 @@ class LimitsView(APIView):
         try:
             server_limits = servers_op.get_limits(data, tenantid)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},

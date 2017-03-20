@@ -43,7 +43,7 @@ class HostView(APIView):
         try:
             hv = hypervisor_op.get_hypervisor(data, hypervisor=hostname)
         except Exception as e:
-            if e.http_status:
+            if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
             else:
                 return Response(data={'error': str(e)},
