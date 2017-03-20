@@ -100,8 +100,9 @@ class OperateServers(OperateNova):
                  'password': data['password'],
                  'auth_url': data['url'],
                  'project_id': project_id}
-        projects = self.compute(param).list_servers(**query)
-        return projects
+        servers = self.compute(param).list_servers(**query)
+        servers = list(servers)
+        return servers
 
     def list_server_interfaces(self, data, project_id, server):
         param = {'username': data['username'],
