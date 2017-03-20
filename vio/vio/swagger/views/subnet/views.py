@@ -45,8 +45,7 @@ class CreateSubnetView(APIView):
                 resp['returnCode'] = 1
             return Response(data=resp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
     def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
@@ -55,10 +54,9 @@ class CreateSubnetView(APIView):
         subnet =  OperateSubnet.OperateSubnet()
         try:
             resp = subnet.list_subnets(vimid, tenantid, **query)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
 
 class DeleteSubnetView(APIView):
@@ -69,10 +67,9 @@ class DeleteSubnetView(APIView):
         subnet =  OperateSubnet.OperateSubnet()
         try:
             resp = subnet.list_subnet(vimid, tenantid, subnetid)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
     def delete(self, request, vimid, tenantid, subnetid):
         logger.info("Enter %s, method is %s, vim_id is %s",
@@ -80,10 +77,9 @@ class DeleteSubnetView(APIView):
         subnet =  OperateSubnet.OperateSubnet()
         try:
             resp = subnet.delete_subnet(vimid, tenantid, subnetid)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
 
 

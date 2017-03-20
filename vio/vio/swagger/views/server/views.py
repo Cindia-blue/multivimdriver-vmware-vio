@@ -61,11 +61,10 @@ class ListServersView(APIView):
                 rsp['returnCode'] = 1
                 server = servers_op.create_server(data, tenantid, create_req)
         except Exception as ex:
-            return Response(data=str(ex),
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data=str(ex), status=ex.http_status)
         server_dict = nova_utils.server_formatter(server)
         rsp.update(server_dict)
-        return Response(data=rsp, status=status.HTTP_200_OK)
+        return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
 
     def get(self, request, vimid, tenantid):
         try:
@@ -84,8 +83,7 @@ class ListServersView(APIView):
         try:
             servers = servers_op.list_servers(data, tenantid, **query)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
         servers_resp = []
         for server in servers:
@@ -121,8 +119,7 @@ class GetServerView(APIView):
             intfs = servers_op.list_server_interfaces(data, tenantid, server)
             server_dict = nova_utils.server_formatter(server, interfaces=intfs)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -147,6 +144,5 @@ class GetServerView(APIView):
         try:
             servers_op.delete_server(data, tenantid, serverid)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
         return Response(status=status.HTTP_204_NO_CONTENT)

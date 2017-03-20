@@ -39,8 +39,7 @@ class LimitsView(APIView):
         try:
             server_limits = servers_op.get_limits(data, tenantid)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],

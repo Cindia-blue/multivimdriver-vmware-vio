@@ -59,8 +59,7 @@ class FlavorsView(APIView):
                     data, tenantid, create_req)
             flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
         rsp.update(flavor_dict)
         return Response(data=rsp, status=status.HTTP_200_OK)
 
@@ -83,8 +82,7 @@ class FlavorsView(APIView):
             flavors_dict = [nova_utils.flavor_formatter(flavor, extra)
                             for flavor, extra in flavors_result]
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -114,8 +112,7 @@ class FlavorView(APIView):
             flavor, extra_specs = flavors_op.get_flavor(data, tenantid, flavorid)
             flavor_dict = nova_utils.flavor_formatter(flavor, extra_specs)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -139,6 +136,5 @@ class FlavorView(APIView):
         try:
             flavors_op.delete_flavor(data, tenantid, flavorid)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(data={'error': str(e)}, status=e.http_status)
         return Response(status=status.HTTP_204_NO_CONTENT)
