@@ -52,6 +52,10 @@ class OperateFlavors(OperateNova):
         flavors = list(flavors)
         result = []
         for flavor in flavors:
+            # Since flavor filter didn't work, need to manually do it.
+            # query['name'] is a list here.
+            if query.get('name') and flavor.name not in query['name']:
+                continue
             extra_specs = self.request('get_flavor_extra_specs', data,
                                        project_id=project_id, flavor_id=flavor.id)
             result.append((flavor, extra_specs))

@@ -32,5 +32,14 @@ class OperateTenant(baseclient):
         param['auth_url'] = data['url']
         param['project_name'] = data['project_name']
         projects = self.identity(param).project_list(**query)
+        projects = list(projects)
+        # fix tenant filter
+        # query['name'] is a list here.
+        if query.get("name"):
+            projs = []
+            for p in projects:
+                if p.name in query['name']:
+                    projs.append(p)
+            projects = projs
         return projects
 
