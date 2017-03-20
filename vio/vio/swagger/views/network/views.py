@@ -43,7 +43,7 @@ class CreateNetworkView(APIView):
             else:
                 resp = net.create_network(vimid, tenantid, body)
                 resp['returnCode'] = 1
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -55,7 +55,7 @@ class CreateNetworkView(APIView):
         net = OperateNetwork.OperateNetwork()
         try:
             resp = net.list_networks(vimid, tenantid, **query)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -69,7 +69,7 @@ class DeleteNetworkView(APIView):
         net = OperateNetwork.OperateNetwork()
         try:
             resp = net.list_network(vimid, tenantid, networkid)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -80,7 +80,7 @@ class DeleteNetworkView(APIView):
         net = OperateNetwork.OperateNetwork()
         try:
             resp = net.delete_network(vimid, tenantid, networkid)
-            return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=resp, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response(data={'error': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
