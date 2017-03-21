@@ -34,6 +34,11 @@ class CreateSubnetView(APIView):
             return Response(data={'error': 'Fail to decode request body.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
+            req_paras = ["name", "networkId", "cidr", "ipVersion"]
+            for para in req_paras:
+                if para not in body:
+                     raise Exception('Required parameter %s is '
+                                     'missing in subnet creation.' % para)
             subnet_name = body.get('name')
             subnet_id = body.get('id', None)
             target = subnet_id or subnet_name

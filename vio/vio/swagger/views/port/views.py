@@ -34,6 +34,11 @@ class CreatePortView(APIView):
             return Response(data={'error': 'Fail to decode request body.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
+            req_paras = ["subnetId", "networkId", "name"]
+            for para in req_paras:
+                if para not in body:
+                     raise Exception('Required parameter %s is '
+                                     'missing in port creation.' % para)
             port_name = body.get('name')
             port_id = body.get('id', None)
             target = port_id or port_name

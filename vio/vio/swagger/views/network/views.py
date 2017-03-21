@@ -34,6 +34,11 @@ class CreateNetworkView(APIView):
             return Response(data={'error': 'Fail to decode request body.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
+            req_paras = ["name", "shared"]
+            for para in req_paras:
+                if para not in body:
+                     raise Exception('Required parameter %s is '
+                                     'missing in net creation.' % para)
             network_name = body.get('name')
             network_id = body.get('id', None)
             target = network_id or network_name
