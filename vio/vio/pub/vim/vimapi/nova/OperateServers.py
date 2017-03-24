@@ -75,9 +75,20 @@ class OperateServers(OperateNova):
         if volumes:
             if not req.get('block_device_mapping_v2'):
                 req['block_device_mapping_v2'] = []
+            if 'imageRef' in req:
+                req['block_device_mapping_v2'].append(
+                    {
+                        'boot_index': 0,
+                        'uuid': req['imageRef'],
+                        'source_type': 'image',
+                        'destination_type': 'local',
+                        'delete_on_termination': True
+                    }
+                )
             for vol in volumes:
                 req['block_device_mapping_v2'].append(
                     {
+                        'boot_index': -1,
                         'uuid': vol["volumeId"],
                         'source_type': 'volume',
                         'destination_type': 'volume',
