@@ -48,6 +48,7 @@ class CreateNetworkView(APIView):
             else:
                 resp = net.create_network(vimid, tenantid, body)
                 resp['returnCode'] = 1
+                return Response(data=resp, status=status.HTTP_201_CREATED)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data={'error': str(e)},
