@@ -20,6 +20,7 @@ from vio.pub.vim.vimapi.nova import OperateFlavors
 from vio.swagger import nova_utils
 from vio.pub.exceptions import VimDriverVioException
 
+
 class FlavorsView(APIView):
 
     def post(self, request, vimid, tenantid):
@@ -66,10 +67,7 @@ class FlavorsView(APIView):
                 return Response(data={'error': str(e)},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         rsp.update(flavor_dict)
-        if exist:
-            return Response(data=rsp, status=status.HTTP_200_OK)
-        else:
-            return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
+        return Response(data=rsp, status=status.HTTP_200_OK)
 
     def get(self, request, vimid, tenantid):
         try:
