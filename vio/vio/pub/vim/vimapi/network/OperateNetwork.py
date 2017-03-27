@@ -77,7 +77,7 @@ class OperateNetwork(BaseNet):
         result['segmentationId'] = network.provider_segmentation_id
         result['networkType'] = network.provider_network_type
         result['physicalNetwork'] = network.provider_physical_network
-        result['vlanTransparent'] = True
+        result['vlanTransparent'] = False
         result['shared'] = network.is_shared
         result['routerExternal'] = network.is_router_external
         return result
