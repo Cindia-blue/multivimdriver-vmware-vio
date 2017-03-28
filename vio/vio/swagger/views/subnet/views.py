@@ -49,7 +49,8 @@ class CreateSubnetView(APIView):
             else:
                 resp = subnet.create_subnet(vimid, tenantid, body)
                 resp['returnCode'] = 1
-                return Response(data=resp, status=status.HTTP_202_ACCEPTED)
+                return Response(data=resp, status=status.HTTP_201_CREATED)
+            return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
             if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
