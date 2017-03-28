@@ -125,7 +125,7 @@ class CreateListImagesView(APIView):
             rsp = image_utils.image_formatter(image)
             rsp.update(vim_rsp)
             rsp['returnCode'] = '1'
-            return Response(data=rsp, status=status.HTTP_201_ACCEPTED)
+            return Response(data=rsp, status=status.HTTP_201_CREATED)
         except Exception as e:
             if hasattr(e, "http_status"):
                 return Response(data={'error': str(e)}, status=e.http_status)
