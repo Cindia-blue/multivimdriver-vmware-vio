@@ -14,7 +14,9 @@ import base64
 import logging
 
 from openstack import exceptions
+from rest_framework import status
 
+from vio.pub.exceptions import VimDriverVioException
 from vio.pub.vim.vimapi.nova.OperateNova import OperateNova
 
 logger = logging.getLogger(__name__)
@@ -31,12 +33,12 @@ class OperateServers(OperateNova):
                  'project_id': project_id}
         cc = self.compute(param)
         req = {
-            "name": create_req.get('name'),
-            "flavorRef": cc.find_flavor(create_req.get('flavorId')).id
+            "name": create_req['name'],
+            "flavorRef": cc.find_flavor(create_req['flavorId']).id
         }
-        boot = create_req.get('boot')
-        boot_type = boot.get('type')
-        if boot_type == 1:
+        boot = create_req['boot']
+        boot_type = boot['type']
+        if int(boot_type) == 1:
             # boot from vol
             req['block_device_mapping_v2'] = [{
                 'boot_index': "0",
@@ -45,8 +47,12 @@ class OperateServers(OperateNova):
                 'destination_type': 'volume',
                 'delete_on_termination': False
             }]
-        elif boot_type == 2:
-            req['imageRef'] = cc.find_image(boot.get('imageId')).id
+        elif int(boot_type) == 2:
+            req['imageRef'] = cc.find_image(boot['imageId']).id
+        else:
+            raise VimDriverVioException(
+                'Boot type should be 1 or 2.',
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         networks = create_req.get('nicArray', [])
         if networks:
             req['networks'] = [{'port': n['portId']} for n in networks]
@@ -66,6 +72,36 @@ class OperateServers(OperateNova):
                 req['security_groups'].append({'name':v})
         # todo attach volumes after server created
         volumes = create_req.get('volumeArray', [])
+        if volumes:
+            if not req.get('block_device_mapping_v2'):
+                req['block_device_mapping_v2'] = []
+            if 'imageRef' in req:
+                req['block_device_mapping_v2'].append(
+                    {
+                        'boot_index': 0,
+                        'uuid': req['imageRef'],
+                        'source_type': 'image',
+                        'destination_type': 'local',
+                        'delete_on_termination': True
+                    }
+                )
+            for vol in volumes:
+                req['block_device_mapping_v2'].append(
+                    {
+                        'boot_index': -1,
+                        'uuid': vol["volumeId"],
+                        'source_type': 'volume',
+                        'destination_type': 'volume',
+                        'delete_on_termination': False
+                    }
+                )
+        inject_files = create_req.get('contextArray', [])
+        if inject_files:
+            req['personality'] = []
+            for i in inject_files:
+                req['personality'].append(
+                    {"path": i["fileName"], "contents": i["fileData"]})
+
         return cc.create_server(**req)
 
     def list_servers(self, data, project_id, **query):
@@ -75,8 +111,9 @@ class OperateServers(OperateNova):
                  'password': data['password'],
                  'auth_url': data['url'],
                  'project_id': project_id}
-        projects = self.compute(param).list_servers(**query)
-        return projects
+        servers = self.compute(param).list_servers(**query)
+        servers = list(servers)
+        return servers
 
     def list_server_interfaces(self, data, project_id, server):
         param = {'username': data['username'],

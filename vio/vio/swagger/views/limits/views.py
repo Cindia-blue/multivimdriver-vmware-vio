@@ -32,15 +32,17 @@ class LimitsView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
 
         servers_op = OperateLimits.OperateLimits()
         try:
             server_limits = servers_op.get_limits(data, tenantid)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],

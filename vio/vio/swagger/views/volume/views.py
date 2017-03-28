@@ -32,6 +32,7 @@ class GetDeleteVolumeView(APIView):
     def get(self, request, vimid, tenantid, volumeid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -44,12 +45,16 @@ class GetDeleteVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, volumeid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -59,8 +64,11 @@ class GetDeleteVolumeView(APIView):
             volume_op.delete_vim_volume(volumeid)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class CreateListVolumeView(APIView):
@@ -68,6 +76,7 @@ class CreateListVolumeView(APIView):
     def get(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -87,13 +96,17 @@ class CreateListVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def post(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -114,9 +127,9 @@ class CreateListVolumeView(APIView):
                     rsp.update(vim_rsp)
                     return Response(data=rsp, status=status.HTTP_200_OK)
 
-            if body.get('imageName'):
+            if body.get('imageId'):
                 image_op = OperateImage.OperateImage(vim_info)
-                imageName = body.get('imageName')
+                imageName = body.get('imageId')
                 image = image_op.find_vim_image(imageName)
                 body['imageId'] = image.id
 
@@ -128,5 +141,8 @@ class CreateListVolumeView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)

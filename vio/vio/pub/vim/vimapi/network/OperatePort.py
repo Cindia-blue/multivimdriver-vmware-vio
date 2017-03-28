@@ -49,7 +49,7 @@ class OperatePort(BaseNet):
 
     def create_port(self, vimid, tenantid, body):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         body = translate(self.keys_mapping, body)
         if "ip" in body:
             body['fixed_ips'] = [{'subnet_id': body.pop('subnetId'),
@@ -64,7 +64,7 @@ class OperatePort(BaseNet):
 
     def list_port(self, vimid, tenantid, portid, ignore_missing=False):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         port = network.port_find(portid, ignore_missing=ignore_missing)
         if port is None:
             return port
@@ -75,12 +75,12 @@ class OperatePort(BaseNet):
 
     def delete_port(self, vimid, tenantid, portid):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         return network.port_delete(portid)
 
     def list_ports(self, vimid, tenantid, **query):
         vim_info = self.get_vim_info(vimid)
-        network = self.auth(vim_info)
+        network = self.auth(vim_info, tenantid)
         query.update({"project_id": tenantid})
         resp = network.ports_get(**query)
         vim_dict = {"vimName": vim_info['name'], "vimId": vim_info['vimId']}

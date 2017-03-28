@@ -32,5 +32,16 @@ class OperateTenant(baseclient):
         param['auth_url'] = data['url']
         param['project_name'] = data['project_name']
         projects = self.identity(param).project_list(**query)
-        return projects
+        projects = list(projects)
+        # fix tenant filter
+        # only list tenants in 'default' domain
+        # query['name'] is a list here.
+        projs = []
+        for p in projects:
+            if p.domain_id != "default":
+                continue
+            if query.get("name") and p.name not in query['name']:
+                continue
+            projs.append(p)
+        return projs
 

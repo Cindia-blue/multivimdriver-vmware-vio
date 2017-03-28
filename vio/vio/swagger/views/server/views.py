@@ -42,14 +42,14 @@ class ListServersView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
                'tenantId': tenantid}
         servers_op = OperateServers.OperateServers()
         server_name = create_req.get('name', None)
         server_id = create_req.get('id', None)
+        exist = False
         try:
             target = server_id or server_name
             server = servers_op.find_server(data, tenantid, target)
@@ -57,15 +57,22 @@ class ListServersView(APIView):
             if server:
                 server = servers_op.get_server(data, tenantid, server.id)
                 rsp['returnCode'] = 0
+                exist = True
             else:
                 rsp['returnCode'] = 1
                 server = servers_op.create_server(data, tenantid, create_req)
-        except Exception as ex:
-            return Response(data=str(ex),
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         server_dict = nova_utils.server_formatter(server)
         rsp.update(server_dict)
-        return Response(data=rsp, status=status.HTTP_200_OK)
+        if exist:
+            return Response(data=rsp, status=status.HTTP_200_OK)
+        else:
+            return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
 
     def get(self, request, vimid, tenantid):
         try:
@@ -77,15 +84,17 @@ class ListServersView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         query = dict(request.query_params)
         servers_op = OperateServers.OperateServers()
         try:
             servers = servers_op.list_servers(data, tenantid, **query)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         servers_resp = []
         for server in servers:
@@ -112,8 +121,7 @@ class GetServerView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
 
         servers_op = OperateServers.OperateServers()
         try:
@@ -121,8 +129,11 @@ class GetServerView(APIView):
             intfs = servers_op.list_server_interfaces(data, tenantid, server)
             server_dict = nova_utils.server_formatter(server, interfaces=intfs)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimId': vim_info['vimId'],
                'vimName': vim_info['name'],
@@ -142,11 +153,13 @@ class GetServerView(APIView):
                 'vimName': vim_info['name'],
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
-                'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'url': vim_info['url']}
         try:
             servers_op.delete_server(data, tenantid, serverid)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_204_NO_CONTENT)

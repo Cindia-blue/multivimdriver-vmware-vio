@@ -26,6 +26,7 @@ class GetDeleteImageView(APIView):
     def get(self, request, vimid, tenantid, imageid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -38,12 +39,16 @@ class GetDeleteImageView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, imageid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -53,14 +58,18 @@ class GetDeleteImageView(APIView):
             image_op.delete_vim_image(imageid)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CreateListImagesView(APIView):
 
     def get(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -77,12 +86,16 @@ class CreateListImagesView(APIView):
             rsp.update(vim_rsp)
             return Response(data=rsp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, vimid, tenantid):
         try:
             vim_info = extsys.get_vim_by_id(vimid)
+            vim_info['tenant'] = tenantid
         except VimDriverVioException as e:
             return Response(data={'error': str(e)}, status=e.status_code)
 
@@ -112,7 +125,10 @@ class CreateListImagesView(APIView):
             rsp = image_utils.image_formatter(image)
             rsp.update(vim_rsp)
             rsp['returnCode'] = '1'
-            return Response(data=rsp, status=status.HTTP_202_ACCEPTED)
+            return Response(data=rsp, status=status.HTTP_201_ACCEPTED)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)

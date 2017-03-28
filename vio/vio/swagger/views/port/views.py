@@ -45,14 +45,19 @@ class CreatePortView(APIView):
             resp = port.list_port(vimid, tenantid, target, ignore_missing=True)
             if resp:
                 resp['returnCode'] = 0
+                return Response(data=resp, status=status.HTTP_200_OK)
             else:
                 resp = port.create_port(vimid, tenantid, body)
                 resp['returnCode'] = 1
                 return Response(data=resp, status=status.HTTP_201_CREATED)
             return Response(data=resp, status=status.HTTP_200_OK)
+
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request, vimid, tenantid):
         logger.info("Enter %s, method is %s, vim_id is %s",
@@ -63,8 +68,11 @@ class CreatePortView(APIView):
             resp = port.list_ports(vimid, tenantid, **query)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class DeletePortView(APIView):
@@ -77,8 +85,11 @@ class DeletePortView(APIView):
             resp = port.list_port(vimid, tenantid, portid)
             return Response(data=resp, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, vimid, tenantid, portid):
         logger.info("Enter %s, method is %s, vim_id is %s",
@@ -88,8 +99,11 @@ class DeletePortView(APIView):
             resp = port.delete_port(vimid, tenantid, portid)
             return Response(data=resp, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

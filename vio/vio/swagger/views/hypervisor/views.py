@@ -37,14 +37,17 @@ class HostView(APIView):
                 'username': vim_info['userName'],
                 'password': vim_info['password'],
                 'url': vim_info['url'],
-                'project_name': vim_info['tenant']}
+                'project_id': tenantid}
 
         hypervisor_op = OperateHypervisor.OperateHypervisor()
         try:
             hv = hypervisor_op.get_hypervisor(data, hypervisor=hostname)
         except Exception as e:
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if hasattr(e, "http_status"):
+                return Response(data={'error': str(e)}, status=e.http_status)
+            else:
+                return Response(data={'error': str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         rsp = {'vimid': vim_info['vimId'],
                'vimName': vim_info['name'],
