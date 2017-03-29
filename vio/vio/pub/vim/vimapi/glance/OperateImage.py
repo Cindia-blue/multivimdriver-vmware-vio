@@ -50,6 +50,7 @@ class imageThread(threading.Thread):
 
         logger.debug("Image----transfer_image")
         vim_info = extsys.get_vim_by_id(vimid)
+        vim_info['tenant'] = tenantid
 
         param = image_utils.sdk_param_formatter(vim_info)
         data = imagefd.read()
