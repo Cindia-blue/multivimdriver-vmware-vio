@@ -129,7 +129,7 @@ class CreateListVolumeView(APIView):
 
             if body.get('imageId'):
                 image_op = OperateImage.OperateImage(vim_info)
-                imageName = body.get('imageId')
+                imageName = body.get('imageId') or body.get('imageName')
                 image = image_op.find_vim_image(imageName)
                 body['imageId'] = image.id
 
