@@ -24,7 +24,7 @@ class OperateHypervisor(OperateNova):
     def get_hypervisor(self, data, hypervisor, **kwargs):
         try:
             return self.request('get_hypervisor', data,
-                                project_name=data['project_name'],
+                                project_id=data['project_id'],
                                 hypervisor=hypervisor,
                                 **kwargs)
         except exceptions.ResourceNotFound:
