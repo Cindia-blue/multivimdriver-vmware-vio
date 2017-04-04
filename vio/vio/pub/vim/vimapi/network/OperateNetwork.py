@@ -25,7 +25,9 @@ def translate(mapping, data, revert=True):
     if revert:
         for key in mapping:
             if key in data:
-                data[mapping[key]] = data.pop(key)
+                val = data.pop(key)
+                if val != '':
+                    data[mapping[key]] = val
     else:
         for key in mapping:
             if mapping[key] in data:

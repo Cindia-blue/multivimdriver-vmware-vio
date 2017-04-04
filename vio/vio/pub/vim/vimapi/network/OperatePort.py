@@ -51,6 +51,12 @@ class OperatePort(BaseNet):
         vim_info = self.get_vim_info(vimid)
         network = self.auth(vim_info, tenantid)
         body = translate(self.keys_mapping, body)
+        if 'network_id' in body:
+            net = network.network_get(body['network_id'])
+            body['network_id'] = net.id
+        if 'subnetId' in body:
+            subnet = network.subnet_get(body['subnetId'])
+            body['subnetId'] = subnet.id
         if "ip" in body:
             body['fixed_ips'] = [{'subnet_id': body.pop('subnetId'),
                                   "ip_address": body.pop('ip')}]

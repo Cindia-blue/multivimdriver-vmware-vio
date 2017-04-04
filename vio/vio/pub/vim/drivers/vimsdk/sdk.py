@@ -33,6 +33,10 @@ def parse_exception(ex):
     '''Parse exception code and yield useful information.'''
     code = 500
 
+    # print ex for debug
+    import traceback
+    traceback.print_exc()
+
     if isinstance(ex, sdk_exc.HttpException):
         # some exceptions don't contain status_code
         if ex.http_status is not None:
@@ -77,8 +81,6 @@ def parse_exception(ex):
         # This could be a generic exception or something we don't understand
         message = six.text_type(ex)
 
-    import traceback
-    traceback.print_exc()
     raise ex
 #    raise senlin_exc.InternalError(code=code, message=message)
 
