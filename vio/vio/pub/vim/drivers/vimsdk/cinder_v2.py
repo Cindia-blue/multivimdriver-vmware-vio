@@ -22,7 +22,6 @@ class CinderClient(base.DriverBase):
 
     def __init__(self, params):
         super(CinderClient, self).__init__(params)
-        LOG.info("%s", str(params))
         self.conn = sdk.create_connection(params)
         self.session = self.conn.session
 
