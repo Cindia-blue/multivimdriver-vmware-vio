@@ -29,7 +29,7 @@ class OperateFlavors(OperateNova):
             "name": create_req.get('name'),
             "vcpus": create_req.get('vcpu'),
             "ram": create_req.get('memory'),
-            "disk": create_req.get('disk'),
+            "disk": create_req.get('disk', 0),
             "ephemeral": create_req.get('ephemeral', 0),
             "swap": create_req.get('swap', 0),
             "is_public": create_req.get('isPublic', True)
